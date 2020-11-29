@@ -14,7 +14,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     DWGraph_DS() {
         graph = new HashMap<>();
         numOfEdges = 0;
-        ModeCount = 0;
+        ModeCount = 10000;
     }
 
     DWGraph_DS(DWGraph_DS other) {
