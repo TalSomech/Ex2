@@ -117,7 +117,7 @@ public class Arena {
 		Iterator<node_data> itr = g.getV().iterator();
 		while(itr.hasNext()) {
 			node_data v = itr.next();
-			Iterator<edge_data> iter = g.getE(v.getKey()).iterator();
+			Iterator<edge_data> iter = g.getE(v.getId()).iterator();
 			while(iter.hasNext()) {
 				edge_data e = iter.next();
 				boolean f = isOnEdge(fr.getLocation(), e,fr.getType(), g);
@@ -140,8 +140,8 @@ public class Arena {
 		return isOnEdge(p,src,dest);
 	}
 	private static boolean isOnEdge(geo_location p, edge_data e, int type, directed_weighted_graph g) {
-		int src = g.getNode(e.getSrc()).getKey();
-		int dest = g.getNode(e.getDest()).getKey();
+		int src = g.getNode(e.getSrc()).getId();
+		int dest = g.getNode(e.getDest()).getId();
 		if(type<0 && dest>src) {return false;}
 		if(type>0 && src>dest) {return false;}
 		return isOnEdge(p,src, dest, g);

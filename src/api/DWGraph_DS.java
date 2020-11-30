@@ -1,11 +1,10 @@
 package api;
 
-import org.w3c.dom.Node;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
+
+////////////////////////////////////////////main class////////////////////////////////////////////////
 
 public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer, node_data> graph;
@@ -20,11 +19,11 @@ public class DWGraph_DS implements directed_weighted_graph {
     DWGraph_DS(DWGraph_DS other) {
         graph = new HashMap<>();
         for (node_data cur : other.getV()) { //adding all other's nodes to our graph
-            this.addNode(new NodeData(cur.getKey()));
+            this.addNode(new NodeData(cur.getId()));
         }
         for (node_data k : other.getV()) {
-            for (int nei : ((NodeData) other.graph.get(k.getKey())).neighbors.keySet()) {
-                this.connect(k.getKey(), nei, ((NodeData) k).neighbors.get(nei).getWeight());
+            for (int nei : ((NodeData) other.graph.get(k.getId())).neighbors.keySet()) {
+                this.connect(k.getId(), nei, ((NodeData) k).neighbors.get(nei).getWeight());
             }
         }
         this.numOfEdges = other.edgeSize();
@@ -46,7 +45,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     @Override
     public void addNode(node_data n) {
-        graph.put(n.getKey(), n);
+        graph.put(n.getId(), n);
         ModeCount++;
     }
 
@@ -104,152 +103,44 @@ public class DWGraph_DS implements directed_weighted_graph {
     public int getMC() {
         return ModeCount;
     }
+}
 
-    public class NodeData implements node_data {
-        private int key, tag;
-        private String info;
-        double weight;
-        private HashMap<Integer, edge_data> neighbors;
-        private ArrayList<Integer> cToMe;
-        private boolean isVis;
-        private node_data pred;
-        public NodeData(int key) {
-            this.key = key;
-            this.info = "";
-            this.tag = -1;
-            neighbors = new HashMap<>();
-            cToMe = new ArrayList<>();
-        }
 
-        @Override
-        public int getKey() {
-            return this.key;
-        }
-
-        @Override
-        public geo_location getLocation() { //TODO: create this
-            return null;
-        }
-
-        @Override
-        public void setLocation(geo_location p) { //TODO: create this
-
-        }
-
-        @Override
-        public double getWeight() {
-            return this.weight;
-        }
-
-        @Override
-        public void setWeight(double w) {
-            this.weight = w;
-        }
-
-        @Override
-        public String getInfo() {
-            return this.info;
-        }
-
-        @Override
-        public void setInfo(String s) {
-            this.info = s;
-        }
-
-        @Override
-        public int getTag() {
-            return this.tag;
-        }
-
-        public boolean isVis() {
-            return isVis;
-        }
-
-        public void setVis(boolean vis) {
-            isVis = vis;
-        }
-
-        public node_data getPred() {
-            return pred;
-        }
-
-        public void setPred(node_data pred) {
-            this.pred = pred;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(key);
-        }
-
-        @Override
-        public int compareTo(node_data o) {
-            return Double.compare(this.getWeight(), o.getWeight());
-        }
-
-        @Override
-        public void setTag(int t) {
-            this.tag = t;
-        }
-
-        class GeoLocation implements geo_location { //TODO: create this
-
-            @Override
-            public double x() {
-                return 0;
-            }
-
-            @Override
-            public double y() {
-                return 0;
-            }
-
-            @Override
-            public double z() {
-                return 0;
-            }
-
-            @Override
-            public double distance(geo_location g) {
-                return 0;
-            }
-        }
-    }
-
-    class edgeData implements edge_data {
-        private int keySrc, keyDest, tag;
-        private double weight;
-        private String info;
+    class edgeData implements edge_data, Serializable {
+        private int src, dest;
+        private transient int tag;
+        private double w;
+        private transient String info;
 
         edgeData(int keySrc, int keyDest, double w) {
-            this.keySrc = keySrc;
-            this.keyDest = keyDest;
-            this.weight = w;
+            this.src = keySrc;
+            this.dest = keyDest;
+            this.w = w;
             this.tag = 0;
             this.info = "";
         }
 
         edgeData(edgeData other) {
-            this.keySrc = other.keySrc;
-            this.keyDest = other.keyDest;
+            this.src = other.src;
+            this.dest = other.dest;
             this.info = other.info;
             this.tag = other.tag;
-            this.weight = other.weight;
+            this.w = other.w;
         }
 
         @Override
         public int getSrc() {
-            return this.keySrc;
+            return this.src;
         }
 
         @Override
         public int getDest() {
-            return this.keyDest;
+            return this.dest;
         }
 
         @Override
         public double getWeight() {
-            return this.weight;
+            return this.w;
         }
 
         @Override
@@ -271,6 +162,9 @@ public class DWGraph_DS implements directed_weighted_graph {
         public void setTag(int t) {
             this.tag = t;
         }
+
+
+        ////////////////////////////////////////////edgeLocation////////////////////////////////////////////////
 
         class edgeLocation implements edge_location { //TODO: create this
 
@@ -285,5 +179,5 @@ public class DWGraph_DS implements directed_weighted_graph {
             }
         }
     }
-}
+
 

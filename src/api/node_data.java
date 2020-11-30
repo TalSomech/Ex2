@@ -11,7 +11,7 @@ public interface node_data {
 	 * Returns the key (id) associated with this node.
 	 * @return
 	 */
-	public int getKey();
+	public int getId();
 	/** Returns the location of this node, if
 	 * none return null.
 	 * 
@@ -36,12 +36,12 @@ public interface node_data {
 	 * Returns the remark (meta data) associated with this node.
 	 * @return
 	 */
-	public String getInfo();
+	public String getPos();
 	/**
 	 * Allows changing the remark (meta data) associated with this node.
 	 * @param s
 	 */
-	public void setInfo(String s);
+	public void setPos(String s);
 	/**
 	 * Temporal data (aka color: e,g, white, gray, black) 
 	 * which can be used be algorithms 
