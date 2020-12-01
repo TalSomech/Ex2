@@ -4,6 +4,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
 
 public class DWGraph_Algo implements dw_graph_algorithms {
     DWGraph_DS graph;
@@ -77,20 +80,34 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public boolean save(String file){
-        Gson gs=new GsonBuilder().setPrettyPrinting().create();
-        JsonObject all=new JsonObject();
-        ArrayList<edge_data> ed=new ArrayList();
-        for (node_data n : graph.getV()) {
-            ed.addAll(graph.getE(n.getId()));
-        }
-        all.add("Edges",gs.toJsonTree(ed,Collection.class));
-        all.add("Nodes",gs.toJsonTree(graph.getV(),Collection.class));
-        String ff=gs.toJson(all);
-        try{
-            PrintWriter pw= new PrintWriter(new File(file));
-            pw.write(ff);
-            pw.close();
-        } catch (FileNotFoundException e) {
+        try {
+            FileWriter r= new FileWriter(file);
+            JsonWriter writer = new JsonWriter(r);
+            writer.beginObject();
+            writer.name("Edges");
+            writer.beginArray();
+            for (node_data n : graph.getV()) {
+                for (edge_data ed: graph.getE(n.getKey())) {
+                    writer.beginObject();
+                    writer.name("src").value(ed.getSrc());
+                    writer.name("w").value(ed.getWeight());
+                    writer.name("dest").value(ed.getDest());
+                    writer.endObject();
+                }
+            }
+            writer.endArray();
+            writer.name("Nodes");
+            writer.beginArray();
+            for (node_data n : graph.getV()) {
+                writer.beginObject();
+                writer.name("pos").value(n.getLocation().toString());
+                writer.name("id").value(n.getKey());
+                writer.endObject();
+            }
+            writer.endArray();
+            writer.endObject();
+            writer.close();
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -112,28 +129,41 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             e.printStackTrace();
             return false;
         }
-
         return true;
     }
-
+//    public boolean load2(String file){
+//        try {
+//            FileReader fr=new FileReader(file);
+//            JsonReader jr=new JsonReader(fr);
+//            int key=0;
+//            jr.beginObject();
+//            jr.
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return true;
+//    }
 
     public boolean tarjan(NodeData nd){
         resetT();
         Stack<node_data> s=new Stack<>();
-        nd.setTag(nd.getId());
+        nd.setTag(nd.getKey());
         s.push(nd);
-        for (edge_data ed: graph.getE(nd.getId())){
+        for (edge_data ed: graph.getE(nd.getKey())){
             NodeData nei= (NodeData)graph.getNode(ed.getDest());
             if (nei.getTag()==-1) {
                 tarjan(nei);
                 nd.setTag(Math.min(nd.getTag(),nei.getTag()));
             }
             else if (s.contains(nei)){
-                nd.setTag(Math.min(nd.getTag(),nei.getId()));
+                nd.setTag(Math.min(nd.getTag(),nei.getKey()));
             }
-
         }
-        if(nd.getTag()==nd.getId()&&nd.getId()!=graph.getV().stream().findFirst().get().getId())
+        if(nd.getTag()==nd.getKey()&&nd.getKey()!=graph.getV().stream().findFirst().get().getKey())
             return false;
         return true;
     }
@@ -144,7 +174,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         PriorityQueue<node_data> queue = new PriorityQueue<>(graph.getV());
         while (!queue.isEmpty()) {
             node_data cur = queue.poll();
-            for (edge_data ed : graph.getE(cur.getId())) {
+            for (edge_data ed : graph.getE(cur.getKey())) {
                 NodeData nei= (NodeData)graph.getNode(ed.getDest());
                 if (!nei.isVis()) {
                     double dis = cur.getWeight() + ed.getWeight();
@@ -169,7 +199,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     public void resetT(){
         for (node_data nd:graph.getV()) {
-            nd.setPos("");
+            nd.setInfo("");
             nd.setTag(-1);
         }
     }
@@ -189,7 +219,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         DWGraph_Algo G= new DWGraph_Algo(g);
         G.save("Graph.json");
         G.load("Graph.json");
-
 
     }
     private class GraphJsonDesrializeltion implements JsonDeserializer<DWGraph_DS> {

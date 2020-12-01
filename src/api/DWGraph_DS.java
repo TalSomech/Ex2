@@ -19,11 +19,11 @@ public class DWGraph_DS implements directed_weighted_graph {
     DWGraph_DS(DWGraph_DS other) {
         graph = new HashMap<>();
         for (node_data cur : other.getV()) { //adding all other's nodes to our graph
-            this.addNode(new NodeData(cur.getId()));
+            this.addNode(new NodeData(cur.getKey()));
         }
         for (node_data k : other.getV()) {
-            for (int nei : ((NodeData) other.graph.get(k.getId())).neighbors.keySet()) {
-                this.connect(k.getId(), nei, ((NodeData) k).neighbors.get(nei).getWeight());
+            for (int nei : ((NodeData) other.graph.get(k.getKey())).neighbors.keySet()) {
+                this.connect(k.getKey(), nei, ((NodeData) k).neighbors.get(nei).getWeight());
             }
         }
         this.numOfEdges = other.edgeSize();
@@ -45,7 +45,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     @Override
     public void addNode(node_data n) {
-        graph.put(n.getId(), n);
+        graph.put(n.getKey(), n);
         ModeCount++;
     }
 

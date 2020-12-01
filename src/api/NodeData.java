@@ -5,38 +5,38 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class NodeData implements node_data {
-    private int id;
-    private transient GeoLocation loc;
+    private int key;
+    private  GeoLocation loc;
     private transient int tag;
-    private String pos;
+    private transient String info;
     private transient double weight;
     public transient HashMap<Integer, edge_data> neighbors;
-    transient ArrayList<Integer> cToMe;
+     transient ArrayList<Integer> cToMe;
     private transient boolean isVis;
     private transient node_data pred;
 
     public NodeData(int key) {
-        this.id = key;
+        this.key = key;
         this.tag = -1;
         neighbors = new HashMap<>();
         cToMe = new ArrayList<>();
         loc = new GeoLocation(0, 0, 0);
-        this.pos = loc.toString();
+        this.info = loc.toString();
     }
 
     public NodeData(int key, String s) {
-        this.id = key;
+        this.key = key;
         this.tag = -1;
         neighbors = new HashMap<>();
         cToMe = new ArrayList<>();
         String[] sArray=s.split(",");
         loc= new NodeData.GeoLocation(Double.parseDouble(sArray[0]),Double.parseDouble(sArray[1]), Double.parseDouble(sArray[2]));
-        this.pos = loc.toString();
+        this.info = loc.toString();
     }
 
     @Override
-    public int getId() {
-        return this.id;
+    public int getKey() {
+        return this.key;
     }
 
     @Override
@@ -62,13 +62,13 @@ public class NodeData implements node_data {
     }
 
     @Override
-    public String getPos() {
-        return this.pos;
+    public String getInfo() {
+        return this.info;
     }
 
     @Override
-    public void setPos(String s) {
-        this.pos = s;
+    public void setInfo(String s) {
+        this.info = s;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class NodeData implements node_data {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(key);
     }
 
     @Override

@@ -59,13 +59,13 @@ public class CL_Agent {
 			}
 		}
 		//@Override
-		public int getSrcNode() {return this._curr_node.getId();}
+		public int getSrcNode() {return this._curr_node.getKey();}
 		public String toJSON() {
 			int d = this.getNextNode();
 			String ans = "{\"Agent\":{"
 					+ "\"id\":"+this._id+","
 					+ "\"value\":"+this._value+","
-					+ "\"src\":"+this._curr_node.getId()+","
+					+ "\"src\":"+this._curr_node.getKey()+","
 					+ "\"dest\":"+d+","
 					+ "\"speed\":"+this.getSpeed()+","
 					+ "\"pos\":\""+_pos.toString()+"\""
@@ -77,7 +77,7 @@ public class CL_Agent {
 
 		public boolean setNextNode(int dest) {
 			boolean ans = false;
-			int src = this._curr_node.getId();
+			int src = this._curr_node.getKey();
 			this._curr_edge = _gg.getEdge(src, dest);
 			if(_curr_edge!=null) {
 				ans=true;
