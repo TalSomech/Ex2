@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class NodeData implements node_data {
+public class NodeData implements node_data,Comparable<node_data> {
     private int key;
     private  GeoLocation loc;
     private transient int tag;
     private transient String info;
     private transient double weight;
     public transient HashMap<Integer, edge_data> neighbors;
-     transient ArrayList<Integer> cToMe;
+    transient ArrayList<Integer> cToMe;
     private transient boolean isVis;
     private transient node_data pred;
 
@@ -32,6 +32,17 @@ public class NodeData implements node_data {
         String[] sArray=s.split(",");
         loc= new NodeData.GeoLocation(Double.parseDouble(sArray[0]),Double.parseDouble(sArray[1]), Double.parseDouble(sArray[2]));
         this.info = loc.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NodeData nodeData = (NodeData) o;
+        return key == nodeData.key &&
+                Double.compare(nodeData.weight, weight) == 0 &&
+                Objects.equals(loc, nodeData.loc) &&
+                Objects.equals(neighbors, nodeData.neighbors);
     }
 
     @Override
@@ -115,6 +126,21 @@ public class NodeData implements node_data {
             this.x = x;
             this.y = y;
             this.z = z;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            GeoLocation that = (GeoLocation) o;
+            return Double.compare(that.x, x) == 0 &&
+                    Double.compare(that.y, y) == 0 &&
+                    Double.compare(that.z, z) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y, z);
         }
 
         @Override
