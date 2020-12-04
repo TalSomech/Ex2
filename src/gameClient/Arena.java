@@ -64,7 +64,6 @@ public class Arena {
 	}
 	public List<CL_Agent> getAgents() {return _agents;}
 	public List<CL_Pokemon> getPokemons() {return _pokemons;}
-
 	
 	public directed_weighted_graph getGraph() {
 		return _gg;
@@ -112,6 +111,7 @@ public class Arena {
 		catch (JSONException e) {e.printStackTrace();}
 		return ans;
 	}
+
 	public static void updateEdge(CL_Pokemon fr, directed_weighted_graph g) {
 		//	oop_edge_data ans = null;
 		Iterator<node_data> itr = g.getV().iterator();
