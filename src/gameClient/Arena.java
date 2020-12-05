@@ -31,7 +31,8 @@ public class Arena {
 	private static Point3D MAX = new Point3D(0, 100,0);
 
 	public Arena() {;
-		_info = new ArrayList<String>();
+		_info = new ArrayList<String>(4);
+		_info.add(" ");
 	}
 	private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
 		_gg = g;
@@ -60,8 +61,8 @@ public class Arena {
 		double dx = x1-x0, dy = y1-y0;
 		MIN = new Point3D(x0-dx/10,y0-dy/10);
 		MAX = new Point3D(x1+dx/10,y1+dy/10);
-		
 	}
+
 	public List<CL_Agent> getAgents() {return _agents;}
 	public List<CL_Pokemon> getPokemons() {return _pokemons;}
 	
@@ -71,14 +72,14 @@ public class Arena {
 	public List<String> get_info() {
 		return _info;
 	}
-	public void set_info(String s) {
-		if(s.charAt(0)=='T') {
+	public void set_info(String s,int id) {
+		if(id==0) {
 		_info.set(0,s);
 		}
 		else {
 			if (_info.size() == this.getAgents().size() + 1)
-				_info.remove(1);
-			_info.add(s);
+				_info.remove(id);
+			_info.set(id,s);
 		}
 	}
 

@@ -8,11 +8,14 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
 
 
-public class DWGraph_Algo implements dw_graph_algorithms {
+    public class DWGraph_Algo implements dw_graph_algorithms {
     DWGraph_DS graph;
 
     DWGraph_Algo(DWGraph_DS g) {
         this.graph = g;
+    }
+    public DWGraph_Algo() {
+        this.graph = new DWGraph_DS();
     }
 
     @Override

@@ -38,7 +38,7 @@ public class Ex2_Client implements Runnable{
 			moveAgants(game, gg);
 			try {
 				if(ind%1==0) {_win.repaint();}
-				_ar.set_info("Time Left: "+(double)game.timeToEnd()/1000);
+				_ar.set_info("Time Left: "+(double)game.timeToEnd()/1000,0);
 				Thread.sleep(dt);
 				ind++;
 			}
@@ -76,7 +76,7 @@ public class Ex2_Client implements Runnable{
 			if(dest==-1) {
 				dest = nextNode(gg, src);
 				game.chooseNextEdge(ag.getID(), dest);
-				_ar.set_info("Agent: "+id+", val: "+v+"   turned to node: "+dest);
+				_ar.set_info("Agent: "+id+", val: "+v+"   turned to node: "+dest,id);
 				System.out.println("Agent: "+id+", val: "+v+"   turned to node: "+dest);
 			}
 		}
@@ -120,7 +120,9 @@ public class Ex2_Client implements Runnable{
 			System.out.println(game.getPokemons());
 			int src_node = 0;  // arbitrary node, you should start at one of the pokemon
 			ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
-			for(int a = 0;a<cl_fs.size();a++) { Arena.updateEdge(cl_fs.get(a),gg);}
+			for(int a = 0;a<cl_fs.size();a++) {
+				Arena.updateEdge(cl_fs.get(a),gg);
+			}
 			for(int a = 0;a<rs;a++) {
 				int ind = a%cl_fs.size();
 				CL_Pokemon c = cl_fs.get(ind);

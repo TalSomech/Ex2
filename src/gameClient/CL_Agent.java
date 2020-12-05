@@ -7,7 +7,7 @@ import api.node_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
-public class CL_Agent {
+public class CL_Agent implements Runnable {
 		public static final double EPS = 0.0001;
 		private static int _count = 0;
 		private static int _seed = 3331;
@@ -167,4 +167,16 @@ public class CL_Agent {
 		public void set_sg_dt(long _sg_dt) {
 			this._sg_dt = _sg_dt;
 		}
+
+	@Override
+	public void run() {
+		while(this.getNextNode()!=-1){
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		this.notifyAll();
 	}
+}

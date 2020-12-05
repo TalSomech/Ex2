@@ -10,8 +10,9 @@ public class CL_Pokemon {
 	private Point3D _pos;
 	private double min_dist;
 	private int min_ro;
-	
+	private boolean edible;
 	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e) {
+		edible=true;
 		_type = t;
 	//	_speed = s;
 		_value = v;
@@ -32,6 +33,7 @@ public class CL_Pokemon {
 		}
 		return ans;
 	}
+
 	public String toString() {return "F:{v="+_value+", t="+_type+"}";}
 	public edge_data get_edge() {
 		return _edge;
@@ -41,6 +43,12 @@ public class CL_Pokemon {
 		this._edge = _edge;
 	}
 
+	public boolean isEdible() {
+		return edible;
+	}
+	public void setEdible(boolean edible) {
+		this.edible = edible;
+	}
 	public Point3D getLocation() {
 		return _pos;
 	}
