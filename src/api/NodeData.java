@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class NodeData implements node_data,Comparable<node_data> {
+public class NodeData implements node_data, Comparable<node_data> {
     private int key;
-    private  GeoLocation loc;
+    private GeoLocation loc;
     private transient int tag;
     private transient String info;
     private transient double weight;
@@ -29,8 +29,8 @@ public class NodeData implements node_data,Comparable<node_data> {
         this.tag = -1;
         neighbors = new HashMap<>();
         cToMe = new ArrayList<>();
-        String[] sArray=s.split(",");
-        loc= new NodeData.GeoLocation(Double.parseDouble(sArray[0]),Double.parseDouble(sArray[1]), Double.parseDouble(sArray[2]));
+        String[] sArray = s.split(",");
+        loc = new GeoLocation(Double.parseDouble(sArray[0]), Double.parseDouble(sArray[1]), Double.parseDouble(sArray[2]));
         this.info = loc.toString();
     }
 
@@ -117,12 +117,18 @@ public class NodeData implements node_data,Comparable<node_data> {
     public void setTag(int t) {
         this.tag = t;
     }
-    ////////////////////////////////////////////GeoLocation////////////////////////////////////////////////
 
-    class GeoLocation implements geo_location {
+    ////////////////////////////////////////////GeoLocation////////////////////////////////////////////////
+     class GeoLocation implements geo_location {
         double x, y, z;
 
         public GeoLocation(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public void setLoc(double x, double y, double z) {
             this.x = x;
             this.y = y;
             this.z = z;
@@ -181,3 +187,6 @@ public class NodeData implements node_data,Comparable<node_data> {
         }
     }
 }
+
+
+

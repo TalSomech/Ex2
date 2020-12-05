@@ -71,8 +71,15 @@ public class Arena {
 	public List<String> get_info() {
 		return _info;
 	}
-	public void set_info(List<String> _info) {
-		this._info = _info;
+	public void set_info(String s) {
+		if(s.charAt(0)=='T') {
+		_info.set(0,s);
+		}
+		else {
+			if (_info.size() == this.getAgents().size() + 1)
+				_info.remove(1);
+			_info.add(s);
+		}
 	}
 
 	////////////////////////////////////////////////////

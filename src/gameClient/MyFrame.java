@@ -1,14 +1,9 @@
 package gameClient;
 
-import api.*;
-import gameClient.util.Point3D;
-import gameClient.util.Range;
-import gameClient.util.Range2D;
+import gameClient.util.dataPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * This class represents a very simple GUI class to present a
@@ -21,8 +16,10 @@ public class MyFrame extends JFrame{
 	private int _ind;
 	private Arena _ar;
 	gamePanel gP;
+	dataPanel dP;
 	MyFrame(String a) {
 		super(a);
+		//this.setLayout(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		int _ind = 0;
 	}
