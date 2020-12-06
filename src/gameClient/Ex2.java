@@ -37,7 +37,6 @@ public class Ex2 implements Runnable {
     public void run() {
         game_service game = Game_Server_Ex2.getServer(sen);
         init(game);
-
     }
 
     public void init(game_service game) {

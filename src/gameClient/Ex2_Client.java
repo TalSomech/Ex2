@@ -22,7 +22,7 @@ public class Ex2_Client implements Runnable{
 	
 	@Override
 	public void run() {
-		int scenario_num = 11;
+		int scenario_num = 2;
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
 	//	int id w= 999;
 	//	game.login(id);
@@ -38,7 +38,7 @@ public class Ex2_Client implements Runnable{
 			moveAgants(game, gg);
 			try {
 				if(ind%1==0) {_win.repaint();}
-				_ar.set_info("Time Left: "+(double)game.timeToEnd()/1000,0);
+				_ar.setTime("Time Left: "+(double)game.timeToEnd()/1000);
 				Thread.sleep(dt);
 				ind++;
 			}
@@ -76,7 +76,7 @@ public class Ex2_Client implements Runnable{
 			if(dest==-1) {
 				dest = nextNode(gg, src);
 				game.chooseNextEdge(ag.getID(), dest);
-				_ar.set_info("Agent: "+id+", val: "+v+"   turned to node: "+dest,id);
+				_ar.set_info("Agent: "+id+", score: "+v,id);
 				System.out.println("Agent: "+id+", val: "+v+"   turned to node: "+dest);
 			}
 		}

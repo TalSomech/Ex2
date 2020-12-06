@@ -22,7 +22,6 @@ public class MyFrame2 extends JFrame implements ActionListener {
         this.gr=gr;
         addMenu();
         initPanel();
-
     }
 
     public void addMenu(){
