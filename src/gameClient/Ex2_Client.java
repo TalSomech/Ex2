@@ -22,7 +22,7 @@ public class Ex2_Client implements Runnable{
 	
 	@Override
 	public void run() {
-		int scenario_num = 2;
+		int scenario_num = 1;
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
 	//	int id w= 999;
 	//	game.login(id);
@@ -32,8 +32,10 @@ public class Ex2_Client implements Runnable{
 		init(game);
 		game.startGame();
 		_win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
+		List<CL_Agent> agn=_ar.getAgents();
 		int ind=0;
 		long dt=100;
+
 		while(game.isRunning()) {
 			moveAgants(game, gg);
 			try {

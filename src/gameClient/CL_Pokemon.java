@@ -10,16 +10,16 @@ public class CL_Pokemon {
 	private Point3D _pos;
 	private double min_dist;
 	private int min_ro;
-	private boolean edible;
+	private CL_Agent nxtEater;
 	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e) {
-		edible=true;
 		_type = t;
 	//	_speed = s;
 		_value = v;
 		set_edge(e);
 		_pos = p;
-		min_dist = -1;
+		min_dist = Integer.MAX_VALUE;
 		min_ro = -1;
+		nxtEater= null;
 	}
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
@@ -43,12 +43,7 @@ public class CL_Pokemon {
 		this._edge = _edge;
 	}
 
-	public boolean isEdible() {
-		return edible;
-	}
-	public void setEdible(boolean edible) {
-		this.edible = edible;
-	}
+
 	public Point3D getLocation() {
 		return _pos;
 	}
@@ -62,6 +57,14 @@ public class CL_Pokemon {
 
 	public void setMin_dist(double mid_dist) {
 		this.min_dist = mid_dist;
+	}
+
+	public CL_Agent getNxtEater() {
+		return nxtEater;
+	}
+
+	public void setNxtEater(CL_Agent nxtEater) {
+		this.nxtEater = nxtEater;
 	}
 
 	public int getMin_ro() {

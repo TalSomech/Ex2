@@ -171,7 +171,9 @@ public class Arena {
                     fr.set_edge(e);
                 }
             }
+
         }
+
     }
 
     private static boolean isOnEdge(geo_location p, geo_location src, geo_location dest) {

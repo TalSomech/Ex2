@@ -178,7 +178,7 @@ public class NodeData implements node_data, Comparable<node_data> {
 
         @Override
         public double distance(geo_location g) {
-            return Math.sqrt(Math.pow(this.x + g.x(), 2) + Math.pow(this.y + g.y(), 2) + Math.pow(this.z + g.z(), 2));
+            return Math.sqrt(Math.pow(this.x - g.x(), 2) + Math.pow(this.y - g.y(), 2) + Math.pow(this.z - g.z(), 2));
         }
 
         @Override

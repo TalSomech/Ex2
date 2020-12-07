@@ -170,13 +170,17 @@ public class CL_Agent implements Runnable {
 
 	@Override
 	public void run() {
-		while(this.getNextNode()!=-1){
+		while(this.get_curr_fruit()!=null){
 			try {
-				this.wait();
+			//	this.wait();
+				this.wait(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		Ex2.chooseTarget(this);
+//		_ar.set_info("Agent: "+this.getID()+", score: "+_value,_id);
+//		System.out.println("Agent: "+_id+", val: "+_value+"   turned to node: "+getNextNode());
 		this.notifyAll();
 	}
 }

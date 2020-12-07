@@ -147,22 +147,7 @@ import com.google.gson.stream.JsonWriter;
         }
         return true;
     }
-//    public boolean load2(String file){
-//        try {
-//            FileReader fr=new FileReader(file);
-//            JsonReader jr=new JsonReader(fr);
-//            int key=0;
-//            jr.beginObject();
-//            jr.
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return true;
-//    }
+
 
     public boolean tarjan(NodeData nd,Stack s){
         boolean flag;
@@ -220,23 +205,7 @@ import com.google.gson.stream.JsonWriter;
         }
     }
 
-//    public static void main(String[] args) {
-//        DWGraph_DS g = new DWGraph_DS();
-//        NodeData one= new NodeData(1);
-//        NodeData two= new NodeData(2);
-//        NodeData three= new NodeData(3);
-//        NodeData four= new NodeData(4);
-//        g.addNode(one);
-//        g.addNode(two);
-//        g.addNode(three);
-//        g.addNode(four);
-//        g.connect(1,2,5);
-//        g.connect(2,4,8);
-//        DWGraph_Algo G= new DWGraph_Algo(g);
-//        G.save("Graph.json");
-//        G.load("Graph.json");
-//        G.save("g.json");
-//    }
+
     private class GraphJsonDesrializeltion implements JsonDeserializer<DWGraph_DS> {
         @Override
         public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
