@@ -7,6 +7,8 @@ import api.node_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class CL_Agent implements Runnable {
 		public static final double EPS = 0.0001;
 		private static int _count = 0;
@@ -21,9 +23,18 @@ public class CL_Agent implements Runnable {
 		private CL_Pokemon _curr_fruit;
 		private long _sg_dt;
 		private double _value;
+		private List<node_data> path;
 
+	public List<node_data> getPath() {
+		return path;
+	}
 
-		public CL_Agent(directed_weighted_graph g, int start_node) {
+	public void setPath(List<node_data> path,node_data n) {
+		this.path = path;
+		path.add(n);
+	}
+
+	public CL_Agent(directed_weighted_graph g, int start_node) {
 			_gg = g;
 			setMoney(0);
 			this._curr_node = _gg.getNode(start_node);
@@ -170,17 +181,18 @@ public class CL_Agent implements Runnable {
 
 	@Override
 	public void run() {
-		while(this.get_curr_fruit()!=null){
-			try {
-			//	this.wait();
-				this.wait(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			boolean flag=true;
+			while(flag) {
+				while (this.get_curr_fruit() != null) {
+					try {
+						this.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				synchronized (this) {
+					Ex2.chooseTarget(this);
+				}
 			}
-		}
-		Ex2.chooseTarget(this);
-//		_ar.set_info("Agent: "+this.getID()+", score: "+_value,_id);
-//		System.out.println("Agent: "+_id+", val: "+_value+"   turned to node: "+getNextNode());
-		this.notifyAll();
 	}
 }

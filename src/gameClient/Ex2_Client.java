@@ -65,7 +65,7 @@ public class Ex2_Client implements Runnable{
 		List<CL_Agent> log = Arena.getAgents(lg, gg);
 		_ar.setAgents(log);
 		//ArrayList<OOP_Point3D> rs = new ArrayList<OOP_Point3D>();
-		String fs =  game.getPokemons();
+		String fs = game.getPokemons();
 		List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
 		_ar.setPokemons(ffs);
 		for(int i=0;i<log.size();i++) {
