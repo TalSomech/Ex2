@@ -128,6 +128,7 @@ public class Arena {
             for (int i = 0; i < ags.length(); i++) {
                 CL_Agent c = new CL_Agent(gg, 0);
                 c.update(ags.get(i).toString());
+                //c.set_curr_fruit();
                 ans.add(c);
             }
             //= getJSONArray("Agents");

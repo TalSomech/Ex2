@@ -3,6 +3,8 @@ import api.edge_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class CL_Pokemon {
 	private edge_data _edge;
 	private double _value;
@@ -21,6 +23,7 @@ public class CL_Pokemon {
 		min_ro = -1;
 		nxtEater= null;
 	}
+
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
 		try {
@@ -69,6 +72,21 @@ public class CL_Pokemon {
 
 	public int getMin_ro() {
 		return min_ro;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CL_Pokemon that = (CL_Pokemon) o;
+		return Double.compare(that._value, _value) == 0 &&
+				_type == that._type &&
+				Objects.equals(_pos, that._pos);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(_value, _type, _pos);
 	}
 
 	public void setMin_ro(int min_ro) {

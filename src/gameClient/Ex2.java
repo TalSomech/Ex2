@@ -1,12 +1,16 @@
 package gameClient;
 
 import Server.Game_Server_Ex2;
-import api.*;
+import api.DWGraph_Algo;
+import api.dw_graph_algorithms;
+import api.game_service;
+import api.node_data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +20,9 @@ public class Ex2 implements Runnable {
     private static int sen, id;
     private static dw_graph_algorithms algo;
     public static game_service game;
-    private static List<CL_Agent> flags;
+    private static boolean flag;
+    private static HashMap<Integer,CL_Pokemon> menu;
+    private static List<CL_Pokemon> poks;
     public static void main(String[] args) {
         if (args.length == 2) {
             sen = Integer.parseInt(args[0]);
@@ -53,6 +59,7 @@ public class Ex2 implements Runnable {
     }
 
     public static void init(game_service game) {
+        flag=true;
         String pks = game.getPokemons();
         String graph = game.getGraph();
         String file = saveAsString(graph);
@@ -62,25 +69,27 @@ public class Ex2 implements Runnable {
         _ar.setGraph(algo.getGraph());
         _ar.setPokemons(Arena.json2Pokemons(pks));
         _win = new MyFrame("Ex2");
+        menu=new HashMap<>();
         _win.setSize(1000, 700);
         try {
             String info = game.toString();
             JSONObject line = new JSONObject(info);
             JSONObject meow = line.getJSONObject("GameServer");
             int numOfAg = meow.getInt("agents");
-            flags=new LinkedList<>();
             List<CL_Pokemon> pkms = _ar.getPokemons();
             for (CL_Pokemon pk : pkms) {
                 Arena.updateEdge(pk, _ar.getGraph());
             }
-
+            poks=new LinkedList<>(_ar.getPokemons());
             for (int a = 0; a < numOfAg; a++) {
                 int ind = a % pkms.size();
+                menu.put(a,null);
                 CL_Pokemon c = pkms.get(ind);
                 int nn = c.get_edge().getDest();
                 if (c.getType() < 0) {
                     nn = c.get_edge().getSrc();
                 }
+                //game.addAgent(nn);
                 game.addAgent(nn);
             }
             String lg = game.getAgents();
@@ -115,29 +124,41 @@ public class Ex2 implements Runnable {
             temp = algo.shortestPathDist(agent.getSrcNode(), pkm.get_edge().getSrc());
             if (temp < min) {
                 if (temp < pkm.getMin_dist()) {
-                    agent.set_curr_fruit(pkm);
+                   // agent.set_curr_fruit(pkm);
+                    menu.put(agent.getID(), pkm);
                 }
                 min = temp;
                 nextPkms = pkm;
             }
         }
         if (nextPkms == agent.get_curr_fruit()&& nextPkms.getNxtEater()!=null) {
-            nextPkms.getNxtEater().set_curr_fruit(null);
-            flags.add(nextPkms.getNxtEater());
-            nextPkms.setNxtEater(agent);
+            //nextPkms.getNxtEater().set_curr_fruit(null);
+            //flags.add(nextPkms.getNxtEater());
+            menu.put(nextPkms.getNxtEater().getID(),null);
         }
-        agent.set_curr_fruit(nextPkms);
+        //agent.set_curr_fruit(nextPkms);
+        nextPkms.setNxtEater(agent);
         nextPkms.setMin_dist(min);
-        flags.remove(agent);
+        menu.put(agent.getID(),nextPkms);
+       // flags.remove(agent);
     }
 
     private static int nextNode(CL_Agent agent) {
+        int ans;
+        if(agent.getPath()==null||agent.getPath().size()==0) {
+            node_data n = _ar.getGraph().getNode(menu.get(agent.getID()).get_edge().getDest());
+            agent.setPath(algo.shortestPath(agent.getSrcNode(), menu.get(agent.getID()).get_edge().getSrc()), n);
+        }
         if(agent.getPath().isEmpty()){
             return -1;
         }
-        int ans=agent.getPath().get(0).getKey();
-            agent.setNextNode(agent.getPath().get(0).getKey());
-        agent.getPath().remove(0);
+        if(agent.getPath().size()==1){
+            menu.put(agent.getID(),null);
+            ans=agent.getPath().get(0).getKey();
+        return ans;
+        }
+        ans=agent.getPath().get(1).getKey();
+        agent.setNextNode(agent.getPath().get(1).getKey());
         return ans;
     }
 
@@ -145,33 +166,34 @@ public class Ex2 implements Runnable {
         //List<node_data> nds;
         String lg = game.move();
         List<CL_Agent> balls = Arena.getAgents(lg, _ar.getGraph());
-        ///_ar.setAgents(balls);
         String fs = game.getPokemons();
         List<CL_Pokemon> curr_pkms = Arena.json2Pokemons(fs);
+//        List<CL_Pokemon> arPkms=_ar.getPokemons();
+//        _ar.setPokemons(curr_pkms);
+        _ar.setAgents(balls);
         for (int a = 0; a < curr_pkms.size(); a++) {
             Arena.updateEdge(curr_pkms.get(a), _ar.getGraph());
         }
-        if (!_ar.getPokemons().equals(curr_pkms)) {
+        int k=0;
+        if (!poks.equals(curr_pkms)||flag) {
+            poks=new LinkedList<>(curr_pkms);
+            flag=false;
             _ar.setPokemons(curr_pkms);
-            if(flags.isEmpty()){
-                flags.addAll(balls);
-            }
-            while (!flags.isEmpty()) {
-                for (CL_Agent agnt : flags) {
-                    chooseTarget(agnt);
+            while(menu.containsValue(null)){//TODO: add if numOfAgents>numOfFruits
+                for(Integer agntID: menu.keySet()){
+                    chooseTarget(balls.get(agntID));
                 }
             }
         }
             for (CL_Agent agn : balls) {
-                //TODO:add if nds is empty
-                node_data n=_ar.getGraph().getNode(agn.get_curr_fruit().get_edge().getDest());
-                agn.setPath(algo.shortestPath(agn.getSrcNode(), agn.get_curr_fruit().get_edge().getSrc()),n);
-                int dest = nextNode(agn);
-                game.chooseNextEdge(agn.getID(), dest);
-            }
-
-
-
+                    int dest = nextNode(agn);
+//                node_data n = _ar.getGraph().getNode(menu.get(agn.getID()).get_edge().getDest());
+//                agn.setPath(algo.shortestPath(agn.getSrcNode(), menu.get(agn.getID()).get_edge().getSrc()), n);
+//                for (int i=0; i<agn.getPath().size(); i++){
+//                    game.chooseNextEdge(agn.getID(),agn.getPath().get(i).getKey());
+//                }
+                     game.chooseNextEdge(agn.getID(), dest);
+           }
     }
     //TODO: move the fuck out lines 184-187
 }
