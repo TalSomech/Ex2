@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Ex2 implements Runnable {
@@ -16,7 +16,7 @@ public class Ex2 implements Runnable {
     private static int sen, id;
     private static dw_graph_algorithms algo;
     public static game_service game;
-    private static ArrayList<CL_Agent> flags;
+    private static List<CL_Agent> flags;
     public static void main(String[] args) {
         if (args.length == 2) {
             sen = Integer.parseInt(args[0]);
@@ -29,7 +29,6 @@ public class Ex2 implements Runnable {
         //load agents and pokemon
         //Game runner start
         init(game);
-
         Thread client = new Thread(new Ex2());
         client.start();
     }
@@ -63,14 +62,13 @@ public class Ex2 implements Runnable {
         _ar.setGraph(algo.getGraph());
         _ar.setPokemons(Arena.json2Pokemons(pks));
         _win = new MyFrame("Ex2");
-
         _win.setSize(1000, 700);
         try {
             String info = game.toString();
             JSONObject line = new JSONObject(info);
             JSONObject meow = line.getJSONObject("GameServer");
             int numOfAg = meow.getInt("agents");
-            flags=new ArrayList<>(numOfAg);
+            flags=new LinkedList<>();
             List<CL_Pokemon> pkms = _ar.getPokemons();
             for (CL_Pokemon pk : pkms) {
                 Arena.updateEdge(pk, _ar.getGraph());
@@ -87,22 +85,13 @@ public class Ex2 implements Runnable {
             }
             String lg = game.getAgents();
             List<CL_Agent> balls = Arena.getAgents(lg, _ar.getGraph());
-            flags=new ArrayList<>(balls);
             _ar.setAgents(balls);
             _win.update(_ar);
             _win.setVisible(true);
-           // initAgents(Arena.getAgents(game.getAgents(),_ar.getGraph()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-//
-//    public static void initAgents(List<CL_Agent> balls) {
-//        for (int i = 0; i < balls.size(); i++) {
-//            Thread k = new Thread(balls.get(i));
-//            k.start();
-//        }
-//    }
 
     public static String saveAsString(String jsonG) {
         try {
@@ -117,7 +106,7 @@ public class Ex2 implements Runnable {
     }
 
     public static void chooseTarget(CL_Agent agent) {
-        String fs =  game.getPokemons();
+        //String fs =  game.getPokemons();
         List<CL_Pokemon> pkms = _ar.getPokemons();
         double min = Integer.MAX_VALUE;
         double temp = 0;
@@ -140,7 +129,6 @@ public class Ex2 implements Runnable {
         agent.set_curr_fruit(nextPkms);
         nextPkms.setMin_dist(min);
         flags.remove(agent);
-      //  return //nextPkms.get_edge().getSrc();
     }
 
     private static int nextNode(CL_Agent agent) {
@@ -152,42 +140,21 @@ public class Ex2 implements Runnable {
         agent.getPath().remove(0);
         return ans;
     }
-//
-//    private static void moveAgents(game_service game, directed_weighted_graph gg) {//TODO: print status
-//        List<node_data> nds;
-//        String lg = game.move();
-//        List<CL_Agent> balls = Arena.getAgents(lg, gg);
-//        _ar.setAgents(balls);
-//        String fs =  game.getPokemons();
-//        List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
-//        _ar.setPokemons(ffs);
-//        for(int a = 0;a<ffs.size();a++) {
-//            Arena.updateEdge(ffs.get(a),gg);
-//        }
-//        for (CL_Agent agn:balls) {
-//            if(agn.get_curr_fruit()!=null) {
-//                nds = algo.shortestPath(agn.getSrcNode(), agn.get_curr_fruit().get_edge().getSrc());
-//                nds.add(nds.size() - 1, gg.getNode(agn.get_curr_fruit().get_edge().getDest()));
-//                int dest = nextNode(nds, agn);
-//                game.chooseNextEdge(agn.getID(), dest);
-//            }
-//        }
-//    }
 
     public static void moveAgents(){//TODO: print status
-        List<node_data> nds;
+        //List<node_data> nds;
         String lg = game.move();
         List<CL_Agent> balls = Arena.getAgents(lg, _ar.getGraph());
         ///_ar.setAgents(balls);
         String fs = game.getPokemons();
-        List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
-        for (int a = 0; a < ffs.size(); a++) {
-            Arena.updateEdge(ffs.get(a), _ar.getGraph());
+        List<CL_Pokemon> curr_pkms = Arena.json2Pokemons(fs);
+        for (int a = 0; a < curr_pkms.size(); a++) {
+            Arena.updateEdge(curr_pkms.get(a), _ar.getGraph());
         }
-        if (!_ar.getPokemons().equals(ffs)) {
-            _ar.setPokemons(ffs);
+        if (!_ar.getPokemons().equals(curr_pkms)) {
+            _ar.setPokemons(curr_pkms);
             if(flags.isEmpty()){
-                flags=new ArrayList<>(_ar.getAgents());
+                flags.addAll(balls);
             }
             while (!flags.isEmpty()) {
                 for (CL_Agent agnt : flags) {
@@ -201,7 +168,6 @@ public class Ex2 implements Runnable {
                 agn.setPath(algo.shortestPath(agn.getSrcNode(), agn.get_curr_fruit().get_edge().getSrc()),n);
                 int dest = nextNode(agn);
                 game.chooseNextEdge(agn.getID(), dest);
-                System.out.println("1");
             }
 
 
