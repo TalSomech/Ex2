@@ -29,6 +29,10 @@ public class CL_Agent implements Runnable {
 		return path;
 	}
 
+//	public void set_curr_edge(int src){
+//		this._curr_edge=src;
+//	}
+
 	public void setPath(List<node_data> path,node_data n) {
 		this.path = path;
 		path.add(n);
