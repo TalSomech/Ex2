@@ -23,10 +23,9 @@ public class Ex2 implements Runnable {
     private static boolean flag;
     private static HashMap<Integer, CL_Pokemon> menu;
     private static boolean change=false;
-    private static int counter=0;
 
     public static void main(String[] args) {
-        if (args.length == 4) {
+        if (args.length == 2) {
             sen = Integer.parseInt(args[0]);
             id = Integer.parseInt(args[1]);
         } else {
@@ -46,7 +45,7 @@ public class Ex2 implements Runnable {
         int ind = 0;
         long dt = 20;
         game.startGame();
-        boolean keepTheFuckRunning = true;
+        //boolean keepTheFuckRunning = true;
         while(game.isRunning()) {
         //while (keepTheFuckRunning) {
             try {
@@ -126,7 +125,6 @@ public class Ex2 implements Runnable {
             temp = algo.shortestPathDist(agent.getSrcNode(), pkm.get_edge().getSrc());
             if (temp < min) {
                 if (temp < pkm.getMin_dist()) {
-                    // agent.set_curr_fruit(pkm);
                     menu.put(agent.getID(), pkm);
                 }
                 min = temp;
@@ -146,7 +144,6 @@ public class Ex2 implements Runnable {
         int ans;
         if (agent.getPath() == null || agent.getPath().size() == 0) {
             node_data n = _ar.getGraph().getNode(menu.get(agent.getID()).get_edge().getDest());
-            //node_data n = _ar.getGraph().getNode(agent.getSrcNode());//I need the dest!!!!!!!!!!
             agent.setPath(algo.shortestPath(agent.getSrcNode(), menu.get(agent.getID()).get_edge().getSrc()), n);
         }
         if (agent.getPath().isEmpty()) {
@@ -162,7 +159,7 @@ public class Ex2 implements Runnable {
         return ans;
     }
 
-    public static void moveAgents() {//TODO: print status
+    public static void moveAgents() {
         String lg = game.move();
         List<CL_Agent> balls = Arena.getAgents(lg, _ar.getGraph());
         String fs = game.getPokemons();
@@ -175,7 +172,6 @@ public class Ex2 implements Runnable {
         for (CL_Agent agnt:balls) {
             if (agnt.getPath()==null){
                 change=true;
-                counter++;
                 break;
             }
         }
@@ -191,6 +187,7 @@ public class Ex2 implements Runnable {
         for (CL_Agent agn : balls) {
             int dest = nextNode(agn);
             game.chooseNextEdge(agn.getID(), dest);
+            _ar.set_info("Agent: "+agn.getID()+", score: "+agn.getValue(),agn.getID());
         }
     }
 }

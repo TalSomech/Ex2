@@ -64,18 +64,18 @@ class DWGraph_AlgoTest {
         DWGraph_DS g1= init(10,20);
         DWGraph_Algo g= new DWGraph_Algo(g1);
         assertFalse(g.isConnected());
-        g1.connect(7,0,2);
-        g1.connect(4,8,2);
+        g1.connect(7,5,2);
+        g1.connect(7,8,2);
         assertTrue(g.isConnected());
         //removing a node with one neighbor
-        g.getGraph().removeNode(8);
-        g1.connect(4,5,2);
+        g.getGraph().removeNode(0);
         assertTrue(g.isConnected());
         // removing a edges from the middle
-        g.getGraph().removeEdge(5,9);
+        g.getGraph().removeEdge(6,4);
         assertFalse(g.isConnected());
         //connecting the graph again
-        g.getGraph().connect(4,9,5);
+        g.getGraph().connect(6,3,5);
+        g.getGraph().connect(3,4,5);
         assertTrue(g.isConnected());
         //removing all nodes
         for (int i = 0; i < 10; i++) {
