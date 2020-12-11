@@ -105,6 +105,16 @@ public class DWGraph_DS implements directed_weighted_graph {
         return ((NodeData) graph.get(node_id)).neighbors.values();
     }
 
+    public Collection<edge_data> getE() {
+        List<edge_data> ans= new ArrayList<>();
+        for (node_data nds:this.graph.values()) {
+            for (edge_data ed:((NodeData)nds).neighbors.values()) {
+                ans.add(ed);
+            }
+        }
+        return ans;
+    }
+
     @Override
     public node_data removeNode(int key) {
         NodeData node = (NodeData) graph.get(key);

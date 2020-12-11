@@ -55,6 +55,7 @@ public class Ex2 implements Runnable {
                 _ar.setTime("Time Left: " + (double) game.timeToEnd() / 1000);
                 Thread.sleep(dt);
                 ind++;
+                dt=100;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -73,6 +74,7 @@ public class Ex2 implements Runnable {
         algo.load(file);
         _ar.setGraph(algo.getGraph());
         _ar.setPokemons(Arena.json2Pokemons(pks));
+        markProblematicEdges();
         _win = new MyFrame("Ex2");
         menu = new HashMap<>();
         _win.setSize(1000, 700);
@@ -93,6 +95,17 @@ public class Ex2 implements Runnable {
             _win.setVisible(true);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void markProblematicEdges (){
+        for (edge_data ed:((DWGraph_DS)algo.getGraph()).getE()) {
+            geo_location src =algo.getGraph().getNode(ed.getSrc()).getLocation();
+            geo_location dest =algo.getGraph().getNode(ed.getDest()).getLocation();
+            double dist = src.distance(dest);
+            if (dist<(0.001)/2) {
+                ((edgeData)ed).setShort(true);
+            }
         }
     }
 
@@ -163,10 +176,6 @@ public class Ex2 implements Runnable {
             nextPkms.setMin_dist(min);
             menu.put(agent.getID(), nextPkms);
             agent.set_curr_fruit(nextPkms);
-            if (!firsRun) {
-                if (agent.getLastPkmEaten()!=null) {
-                }
-            }
         }
         agent.setLastPkmEaten(agent.get_curr_fruit());
     }
@@ -181,6 +190,9 @@ public class Ex2 implements Runnable {
             return -1;
         }
         if (agent.getPath().size() == 1) {
+            edge_data ed=_ar.getGraph().getEdge(agent.getSrcNode(),agent.getPath().get(0).getKey());
+            if (((edgeData)ed).getIsShort()) dt=50;
+            if ((agent.getSpeed()>=5)&&(ed.getWeight()<2)) dt=50;
             menu.put(agent.getID(), null);
             ans = agent.getPath().get(0).getKey();
             return ans;
@@ -190,9 +202,7 @@ public class Ex2 implements Runnable {
         return ans;
     }
 
-
     public static void moveAgents() {
-
         String lg = game.move();
         List<CL_Agent> balls = Arena.getAgents(lg, _ar.getGraph());
         String fs = game.getPokemons();
@@ -215,16 +225,11 @@ public class Ex2 implements Runnable {
             while (menu.containsValue(null)) {//TODO: add if numOfAgents>numOfFruits
                 for (Integer agntID : menu.keySet()) {
                     chooseTarget(balls.get(agntID));
-//                    if (dt == 1) {
-//                        System.out.println(dt);
-//                        dt = 100;
-//                    }
                 }
             }
             firsRun = false;
         }
         for (CL_Agent agn : balls) {
-            //agn.set_SDT(dt);
             if (agn.get_curr_fruit() != fictivePkm) { ////NEW
                 int dest = nextNode(agn);
                 game.chooseNextEdge(agn.getID(), dest);

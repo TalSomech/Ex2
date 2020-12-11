@@ -7,7 +7,7 @@ import java.util.Objects;
 public class NodeData implements node_data, Comparable<node_data> {
     private int key;
     private GeoLocation loc;
-    private transient int tag, index;
+    private transient int tag;
     private transient String info;
     private transient double weight;
     public transient HashMap<Integer, edge_data> neighbors;
@@ -18,25 +18,16 @@ public class NodeData implements node_data, Comparable<node_data> {
     public NodeData(int key) {
         this.key = key;
         this.tag = -1;
-        this.index=-1;
         neighbors = new HashMap<>();
         cToMe = new ArrayList<>();
         loc = new GeoLocation(0, 0, 0);
         this.info = loc.toString();
     }
 
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
 
     public NodeData(int key, String s) {
         this.key = key;
         this.tag = -1;
-        this.index=-1;
         neighbors = new HashMap<>();
         cToMe = new ArrayList<>();
         String[] sArray = s.split(",");
