@@ -177,6 +177,7 @@ public class Arena {
 
     }
 
+
     private static boolean isOnEdge(geo_location p, geo_location src, geo_location dest) {
 
         boolean ans = false;
@@ -205,6 +206,36 @@ public class Arena {
         }
         return isOnEdge(p, src, dest, g);
     }
+
+
+    public static void updateEdgeForAgent(CL_Agent fr, directed_weighted_graph g) {
+        Iterator<node_data> itr = g.getV().iterator();
+        while (itr.hasNext()) {
+            node_data v = itr.next();
+            Iterator<edge_data> iter = g.getE(v.getKey()).iterator();
+            while (iter.hasNext()) {
+                edge_data e = iter.next();
+                geo_location src =g.getNode(e.getSrc()).getLocation();
+                geo_location dest =g.getNode(e.getDest()).getLocation();
+                boolean f= isAgentsOnEdge(fr.getLocation(),src,dest);
+                if (f==true) {
+                    fr.set_curr_edge(e);
+                    return;
+                }
+            }
+        }
+    }
+
+    private static boolean isAgentsOnEdge(geo_location p, geo_location src, geo_location dest) {
+        boolean ans = false;
+        double dist = src.distance(dest);
+        double d1 = src.distance(p) + p.distance(dest);
+        if (dist > d1 - EPS2) {
+            ans = true;
+        }
+        return ans;
+    }
+
 
     private static Range2D GraphRange(directed_weighted_graph g) {
         Iterator<node_data> itr = g.getV().iterator();

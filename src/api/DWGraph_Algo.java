@@ -51,7 +51,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     @Override
     public boolean isConnected() {
         resetT();
-        Tarjan2 t = new Tarjan2(this.graph);
+        Tarjan t = new Tarjan(this.graph);
         boolean flag = true;
         if (graph.getV().isEmpty())
             return true;
@@ -62,6 +62,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             }
         }
         return flag;
+    }
+
+    public List<List<node_data>> getComponents (){
+        Tarjan t = new Tarjan(this.graph);
+        resetT();
+        return t.getComponents();
     }
 
     @Override
@@ -216,13 +222,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return g;
         }
     }
-    private class Tarjan2 {
+    private class Tarjan {
         int time;
         DWGraph_DS g;
         Stack<NodeData> s;
         List<List<node_data>> components;
 
-        public Tarjan2(DWGraph_DS g){
+        public Tarjan(DWGraph_DS g){
             this.g = g;
             s = new Stack<>();
             time = 0;

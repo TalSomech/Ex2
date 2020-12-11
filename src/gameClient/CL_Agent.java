@@ -24,6 +24,7 @@ public class CL_Agent implements Runnable {
 		private long _sg_dt;
 		private double _value;
 		private List<node_data> path;
+		private CL_Pokemon lastPkmEaten;
 
 	public List<node_data> getPath() {
 		return path;
@@ -33,7 +34,15 @@ public class CL_Agent implements Runnable {
 //		this._curr_edge=src;
 //	}
 
-	public void setPath(List<node_data> path,node_data n) {
+	public CL_Pokemon getLastPkmEaten() {
+		return lastPkmEaten;
+	}
+
+	public void setLastPkmEaten(CL_Pokemon lastPkmEaten) {
+		this.lastPkmEaten = lastPkmEaten;
+	}
+
+	public void setPath(List<node_data> path, node_data n) {
 		this.path = path;
 		path.add(n);
 	}
@@ -45,6 +54,7 @@ public class CL_Agent implements Runnable {
 			_pos = _curr_node.getLocation();
 			_id = -1;
 			setSpeed(0);
+			lastPkmEaten= null;
 		}
 
 		public void update(String json) {
@@ -130,8 +140,6 @@ public class CL_Agent implements Runnable {
 			return this._value;
 		}
 
-
-
 		public int getNextNode() {
 			int ans = -2;
 			if(this._curr_edge==null) {
@@ -155,7 +163,12 @@ public class CL_Agent implements Runnable {
 		public void set_curr_fruit(CL_Pokemon curr_fruit) {
 			this._curr_fruit = curr_fruit;
 		}
-		public void set_SDT(long ddtt) {
+
+	public void set_curr_edge(edge_data _curr_edge) {
+		this._curr_edge = _curr_edge;
+	}
+
+	public void set_SDT(long ddtt) {
 			long ddt = ddtt;
 			if(this._curr_edge!=null) {
 				double w = get_curr_edge().getWeight();

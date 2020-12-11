@@ -1,4 +1,5 @@
 package gameClient;
+import api.edgeData;
 import api.edge_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
@@ -23,6 +24,16 @@ public class CL_Pokemon {
 		min_ro = -1;
 		nxtEater= null;
 	}
+
+//	public CL_Pokemon(CL_Pokemon other){
+//		_type=other._type;
+//		_value=other._value;
+//		_pos=new Point3D(other._pos.x(),other._pos.y(),other._pos.z());
+//		set_edge(new edgeData(other.get_edge().getSrc(),other.get_edge().getDest(),other.get_edge().getWeight()));
+//		min_dist=other.getMin_dist();
+//		min_ro=other.getMin_ro();
+//		nxtEater=other.nxtEater;
+//	}
 
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
