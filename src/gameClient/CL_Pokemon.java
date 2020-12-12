@@ -4,6 +4,8 @@ import api.edge_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CL_Pokemon {
@@ -14,6 +16,7 @@ public class CL_Pokemon {
 	private double min_dist;
 	private int min_ro;
 	private CL_Agent nxtEater;
+	private List<CL_Pokemon> closePkm;
 	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e) {
 		_type = t;
 	//	_speed = s;
@@ -23,17 +26,12 @@ public class CL_Pokemon {
 		min_dist = Integer.MAX_VALUE;
 		min_ro = -1;
 		nxtEater= null;
+		closePkm= new ArrayList<>();
 	}
 
-//	public CL_Pokemon(CL_Pokemon other){
-//		_type=other._type;
-//		_value=other._value;
-//		_pos=new Point3D(other._pos.x(),other._pos.y(),other._pos.z());
-//		set_edge(new edgeData(other.get_edge().getSrc(),other.get_edge().getDest(),other.get_edge().getWeight()));
-//		min_dist=other.getMin_dist();
-//		min_ro=other.getMin_ro();
-//		nxtEater=other.nxtEater;
-//	}
+	public List<CL_Pokemon> getClosePkm() {
+		return closePkm;
+	}
 
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
