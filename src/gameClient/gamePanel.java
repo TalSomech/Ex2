@@ -16,32 +16,31 @@ public class gamePanel extends JPanel {
     private Arena _ar;
     directed_weighted_graph gr;
     private gameClient.util.Range2Range _w2f;
+    MyLabel jLabel;
 
     public gamePanel(directed_weighted_graph g, Arena a) {
+        super();
         _ar = a;
         gr = g;
         agent = new ImageIcon("./rcs/pokeball.png").getImage();
         pikachu = new ImageIcon("./rcs/picka.png").getImage();
         mew = new ImageIcon("./rcs/chi.png").getImage();
-    }
-
-    public void update() {
-        updatePanel();
+        back = new ImageIcon("./rcs/newBack.png").getImage();
     }
 
     public void updatePanel() {
-        Range rx = new Range(20, this.getWidth() - 20);
-        Range ry = new Range(this.getHeight() - 10, 250);
+        Range rx = new Range(5, this.getWidth() - 10);
+        Range ry = new Range(this.getHeight() - 10, 150);
         Range2D frame = new Range2D(rx, ry);
         directed_weighted_graph g = _ar.getGraph();
         _w2f = Arena.w2f(g, frame);
+        initLabel();
+        jLabel.updateLabel();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        paint(g);
-
+    public void initLabel(){
+        jLabel= new MyLabel(_ar);
+        this.add(jLabel);
     }
 
     public void paint(Graphics g) {
@@ -57,6 +56,8 @@ public class gamePanel extends JPanel {
         drawPokemons(g);
         drawAgants(g);
         drawInfo(g);
+        jLabel.updateLabel();
+        jLabel.repaint();
     }
 
     public void drawNode(node_data n, Graphics g) {
@@ -84,15 +85,15 @@ public class gamePanel extends JPanel {
     private void drawInfo(Graphics g) {
         List<String> str = _ar.get_info();
         Graphics2D g2D = (Graphics2D) g;
-        g2D.setColor(Color.WHITE);
+        g2D.setColor(Color.blue);
         g2D.setFont(new Font("OCR A Extended", Font.PLAIN, (this.getHeight() + this.getWidth()) / 80));
         //String dt=_ar
         int x0 = this.getWidth() / 70;
         int y0 = this.getHeight() / 20;
         g2D.drawString(_ar.getTime(), (int) x0 * 5, (int) y0);
-        g2D.setFont(new Font("OCR A Extended", Font.PLAIN, (this.getHeight() + this.getWidth()) /90));
+        g2D.setFont(new Font("OCR A Extended", Font.PLAIN, (this.getHeight() + this.getWidth()) /95));
         for (int i = 0; i < str.size(); i++) {
-            g2D.drawString(str.get(i), (int) x0*5, (int) y0 + (i*2+2) * 20);
+            g2D.drawString(str.get(i), (int) x0*5, (int) y0 + (i*2+3) * 10);
         }
     }
 
@@ -120,9 +121,6 @@ public class gamePanel extends JPanel {
                     } else {
                         g2D.drawImage(mew, (int) fp.x() - r, (int) fp.y() - r, 3 * r, 3 * r, null);
                     }
-//				g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
-//				g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
-
                 }
             }
         }
@@ -131,7 +129,6 @@ public class gamePanel extends JPanel {
     private void drawAgants(Graphics g) {
         g2D = (Graphics2D) g;
         List<CL_Agent> rs = _ar.getAgents();
-        //	Iterator<OOP_Point3D> itr = rs.iterator();
         g.setColor(Color.red);
         int i = 0;
         while (rs != null && i < rs.size()) {
@@ -141,7 +138,6 @@ public class gamePanel extends JPanel {
             if (c != null) {
                 geo_location fp = this._w2f.world2frame(c);
                 g2D.drawImage(agent, (int) fp.x() - 2 * r, (int) fp.y() - r, 3 * r, 3 * r, null);
-                //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
             }
         }
     }

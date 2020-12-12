@@ -15,22 +15,23 @@ import java.util.List;
 public class Ex2 implements Runnable {
     private static MyFrame _win;
     private static Arena _ar;
-    private static int sen, id;
     private static dw_graph_algorithms algo;
     public static game_service game;
     private static boolean firsRun;
     private static HashMap<Integer, List<CL_Pokemon>> menu;
     private static boolean change = false;
     private static List<CL_Pokemon> fictivePkm;
-    private static NodeData fictiveNode = new NodeData(-1);
+    private static final NodeData fictiveNode = new NodeData(-1);
     private static long dt = 100;
 
     public static void main(String[] args) {
+        int id;
+        int sen;
         if (args.length == 2) {
             sen = Integer.parseInt(args[0]);
             id = Integer.parseInt(args[1]);
         } else {
-            sen = 7;
+            sen = 11;
             id = 111111;
         }
         game = Game_Server_Ex2.getServer(sen);
@@ -114,14 +115,12 @@ public class Ex2 implements Runnable {
     }
 
     public static void markClosePkms(List<CL_Pokemon> pkm) {
-        for (int i=0; i<=pkm.size()-1; i++){
-            for (int j=i; j<=pkm.size()-1; j++) {
+        for (int i = 0; i <= pkm.size() - 1; i++) {
+            for (int j = i; j <= pkm.size() - 1; j++) {
                 double dist = pkm.get(i).getLocation().distance(pkm.get(j).getLocation());
                 if (dist < 0.006) {
                     pkm.get(i).getClosePkm().add(pkm.get(j));
                     pkm.get(j).getClosePkm().add(pkm.get(i));
-                    //System.out.println("pk on edge " + pkm.get(i).get_edge().getSrc() + "is close to pk on edg " + pkm.get(j).get_edge().getSrc());
-                    System.out.println(dist);
                 }
             }
         }
@@ -157,7 +156,7 @@ public class Ex2 implements Runnable {
         } else {
             List<List<node_data>> components = ((DWGraph_Algo) algo).getComponents();
             int counter = 1;
-            for (int i = 0; i < components.size(); ++i) {
+            for (int i = 0; i < components.size()-1; ++i) {
                 if (counter <= numOfAg) {
                     int nn = components.get(i).get(0).getKey();
                     game.addAgent(nn);
@@ -187,14 +186,10 @@ public class Ex2 implements Runnable {
         CL_Pokemon nextPkms = null;
         for (CL_Pokemon pkm : pkms) {
             temp = algo.shortestPathDist(agent.getSrcNode(), pkm.get_edge().getSrc());
-            if (temp != -1) { ////NEW
-                if (temp < min) {
-                    if (temp < pkm.getMin_dist()) {
-                        menu.put(agent.getID(), pkm.getClosePkm());
-                    }
-                    min = temp;
-                    nextPkms = pkm;
-                }
+            if ((temp != -1) && (temp < min)) { ////NEW
+                if (temp < pkm.getMin_dist()) menu.put(agent.getID(), pkm.getClosePkm());
+                min = temp;
+                nextPkms = pkm;
             }
         }
         if (temp == -1) {
@@ -226,8 +221,8 @@ public class Ex2 implements Runnable {
         }
         if (agent.getPath().size() == 1) {
             edge_data ed = _ar.getGraph().getEdge(agent.getSrcNode(), agent.getPath().get(0).getKey());
-            if (((edgeData) ed).getIsShort()) dt = 50;
-            if ((agent.getSpeed() >= 5) && (ed.getWeight() < 2)) dt = 50;
+            if (((edgeData) ed).getIsShort()) dt = 30;
+            if ((agent.getSpeed() >= 5) && (ed.getWeight() < 2)) dt = 30;
             menu.put(agent.getID(), null);
             ans = agent.getPath().get(0).getKey();
             return ans;
@@ -270,7 +265,7 @@ public class Ex2 implements Runnable {
             if (agn.get_curr_fruit() != fictivePkm) {
                 int dest = nextNode(agn);
                 game.chooseNextEdge(agn.getID(), dest);
-                _ar.set_info("Agent: " + agn.getID() + ", score: " + agn.getValue() + " ,speed: " + agn.getSpeed(), agn.getID());
+                _ar.set_info("Agent: " + agn.getID() + ", score: " + agn.getValue(), agn.getID());
             }
         }
     }

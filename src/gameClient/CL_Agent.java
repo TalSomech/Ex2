@@ -24,7 +24,6 @@ public class CL_Agent implements Runnable {
 		private long _sg_dt;
 		private double _value;
 		private List<node_data> path;
-		private CL_Pokemon lastPkmEaten;
 
 	public List<node_data> getPath() {
 		return path;
@@ -33,14 +32,6 @@ public class CL_Agent implements Runnable {
 //	public void set_curr_edge(int src){
 //		this._curr_edge=src;
 //	}
-
-	public CL_Pokemon getLastPkmEaten() {
-		return lastPkmEaten;
-	}
-
-	public void setLastPkmEaten(CL_Pokemon lastPkmEaten) {
-		this.lastPkmEaten = lastPkmEaten;
-	}
 
 	public void setPath(List<node_data> path, node_data n) {
 		this.path = path;
@@ -54,7 +45,6 @@ public class CL_Agent implements Runnable {
 			_pos = _curr_node.getLocation();
 			_id = -1;
 			setSpeed(0);
-			lastPkmEaten= null;
 		}
 
 		public void update(String json) {
