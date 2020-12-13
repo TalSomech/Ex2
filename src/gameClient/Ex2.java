@@ -23,16 +23,18 @@ public class Ex2 implements Runnable {
     private static List<CL_Pokemon> fictivePkm;
     private static final NodeData fictiveNode = new NodeData(-1);
     private static long dt = 100;
+    private static int sen, id;
 
     public static void main(String[] args) {
-        int id;
-        int sen;
         if (args.length == 2) {
             sen = Integer.parseInt(args[0]);
             id = Integer.parseInt(args[1]);
-        } else {
-            sen = 11;
-            id = 111111;
+        }
+        else {
+            String ID=popUp.getId();
+            id=Integer.parseInt(ID);
+            String SEN=popUp.getSen();
+            sen=Integer.parseInt(SEN);
         }
         game = Game_Server_Ex2.getServer(sen);
         //load agents and pokemon

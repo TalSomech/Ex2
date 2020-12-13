@@ -12,7 +12,7 @@ import java.util.List;
 
 public class gamePanel extends JPanel {
     private Graphics2D g2D;
-    private Image agent, pikachu, mew, back;
+    private Image agent, pikachu, mew, back, label;
     private Arena _ar;
     directed_weighted_graph gr;
     private gameClient.util.Range2Range _w2f;
@@ -26,11 +26,14 @@ public class gamePanel extends JPanel {
         pikachu = new ImageIcon("./rcs/picka.png").getImage();
         mew = new ImageIcon("./rcs/chi.png").getImage();
         back = new ImageIcon("./rcs/newBack.png").getImage();
+        label= new ImageIcon("./rcs/j1.png").getImage();
     }
 
     public void updatePanel() {
-        Range rx = new Range(5, this.getWidth() - 10);
-        Range ry = new Range(this.getHeight() - 10, 150);
+        double j=((this.getHeight()*this.getWidth())/4000);
+        double k=((this.getHeight()*this.getWidth())/100000);
+        Range rx = new Range(k, this.getWidth() - 10);
+        Range ry = new Range(this.getHeight() - 10, j);
         Range2D frame = new Range2D(rx, ry);
         directed_weighted_graph g = _ar.getGraph();
         _w2f = Arena.w2f(g, frame);
@@ -48,16 +51,16 @@ public class gamePanel extends JPanel {
         int w = this.getWidth();
         int h = this.getHeight();
         g.clearRect(0, 0, w, h);
-        if (_ar.getAgents().size() >= 3) back = new ImageIcon("./rcs/Back.png").getImage();
-        if (_ar.getAgents().size() == 2) back = new ImageIcon("./rcs/Back2Agents.png").getImage();
-        if (_ar.getAgents().size() == 1) back = new ImageIcon("./rcs/Back1Agent.png").getImage();
+//        if (_ar.getAgents().size() >= 3) back = new ImageIcon("./rcs/Back.png").getImage();
+//        if (_ar.getAgents().size() == 2) back = new ImageIcon("./rcs/Back2Agents.png").getImage();
+//        if (_ar.getAgents().size() == 1) back = new ImageIcon("./rcs/Back1Agent.png").getImage();
         g2D.drawImage(back, 0, 0, w, h, null);
         drawGraph(g);
         drawPokemons(g);
         drawAgants(g);
         drawInfo(g);
-        jLabel.updateLabel();
-        jLabel.repaint();
+        //jLabel.updateLabel();
+        //jLabel.repaint();
     }
 
     public void drawNode(node_data n, Graphics g) {
@@ -86,14 +89,16 @@ public class gamePanel extends JPanel {
         List<String> str = _ar.get_info();
         Graphics2D g2D = (Graphics2D) g;
         g2D.setColor(Color.blue);
-        g2D.setFont(new Font("OCR A Extended", Font.PLAIN, (this.getHeight() + this.getWidth()) / 80));
-        //String dt=_ar
+        g2D.setFont(new Font("OCR A Extended", Font.PLAIN, (this.getHeight() * this.getWidth()) / 40000));
         int x0 = this.getWidth() / 70;
         int y0 = this.getHeight() / 20;
-        g2D.drawString(_ar.getTime(), (int) x0 * 5, (int) y0);
-        g2D.setFont(new Font("OCR A Extended", Font.PLAIN, (this.getHeight() + this.getWidth()) /95));
+        g2D.drawString(_ar.getTime(), x0 * 5,y0);
+        g2D.setFont(new Font("OCR A Extended", Font.PLAIN, (this.getHeight() * this.getWidth()) /40000));
+        double j=((this.getHeight()*this.getWidth())/50000);
+        int k=1;
         for (int i = 0; i < str.size(); i++) {
-            g2D.drawString(str.get(i), (int) x0*5, (int) y0 + (i*2+3) * 10);
+            g2D.drawString(str.get(i),x0*5, (int) (y0+k*j));
+            k++;
         }
     }
 
