@@ -14,12 +14,15 @@ import java.util.List;
 
 public class Ex2 implements Runnable {
     private static MyFrame _win;
+    private static scores _score;
     private static Arena _ar;
     private static dw_graph_algorithms algo;
     public static game_service game;
     private static boolean firsRun;
     private static HashMap<Integer, List<CL_Pokemon>> menu;
     private static boolean change = false;
+    private static  CL_Pokemon check;
+    private static List<CL_Pokemon> currPoks;
     private static List<CL_Pokemon> fictivePkm;
     private static final NodeData fictiveNode = new NodeData(-1);
     private static long dt = 100;
@@ -27,14 +30,13 @@ public class Ex2 implements Runnable {
 
     public static void main(String[] args) {
         if (args.length == 2) {
-            sen = Integer.parseInt(args[0]);
-            id = Integer.parseInt(args[1]);
-        }
-        else {
-            String ID=popUp.getId();
-            id=Integer.parseInt(ID);
-            String SEN=popUp.getSen();
-            sen=Integer.parseInt(SEN);
+            id = Integer.parseInt(args[0]);
+            sen = Integer.parseInt(args[1]);
+        } else {
+            String ID = popUp.getId();
+            id = Integer.parseInt(ID);
+            String SEN = popUp.getSen();
+            sen = Integer.parseInt(SEN);
         }
         game = Game_Server_Ex2.getServer(sen);
         //load agents and pokemon
@@ -53,19 +55,21 @@ public class Ex2 implements Runnable {
             //while (keepTheFuckRunning) {
             try {
                 moveAgents();
-                if (ind % 1 == 0) {
-                    _win.repaint();
-                }
+                _win.repaint();
                 _ar.setTime("Time Left: " + (double) game.timeToEnd() / 1000);
                 Thread.sleep(dt);
-                ind++;
                 dt = 100;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        String info = game.toString();
+        _score= new scores(game);
+        _score.setSize(500, 400);
+        _win.setVisible(false);
+        _score.show();
         System.out.println(game.toString());
-        System.exit(0);
+        //System.exit(0);
     }
 
     public static void init(game_service game) {
@@ -93,6 +97,7 @@ public class Ex2 implements Runnable {
             for (CL_Pokemon pk : pkms) {
                 Arena.updateEdge(pk, _ar.getGraph());
             }
+            currPoks=new ArrayList<>(_ar.getPokemons());
             markClosePkms(pkms);
             locateAgents(numOfAg, pkms);
             String lg = game.getAgents();
@@ -158,11 +163,21 @@ public class Ex2 implements Runnable {
         } else {
             List<List<node_data>> components = ((DWGraph_Algo) algo).getComponents();
             int counter = 1;
-            for (int i = 0; i < components.size()-1; ++i) {
-                if (counter <= numOfAg) {
-                    int nn = components.get(i).get(0).getKey();
+            for (int i = 0; i < components.size() - 1; ++i) {
+                int nn = components.get(i).get(0).getKey();
+                game.addAgent(nn);
+                counter++;
+            }
+
+            while (counter<numOfAg){
+                int max=0;
+                for (int i = 0; i < components.size(); i++) {
+                    if (components.get(i).size()>max)
+                        max =i;
+                }
+                for (int i = 0; i < numOfAg - counter; ++i) {
+                   int nn=components.get(max).get(0).getKey();
                     game.addAgent(nn);
-                    counter++;
                 }
             }
         }
@@ -189,7 +204,8 @@ public class Ex2 implements Runnable {
         for (CL_Pokemon pkm : pkms) {
             temp = algo.shortestPathDist(agent.getSrcNode(), pkm.get_edge().getSrc());
             if ((temp != -1) && (temp < min)) { ////NEW
-                if (temp < pkm.getMin_dist()) menu.put(agent.getID(), pkm.getClosePkm());
+                if (temp < pkm.getMin_dist())
+                    menu.put(agent.getID(), pkm.getClosePkm());
                 min = temp;
                 nextPkms = pkm;
             }
@@ -206,7 +222,7 @@ public class Ex2 implements Runnable {
             menu.put(agent.getID(), nextPkms.getClosePkm());
             for (CL_Pokemon pkm : nextPkms.getClosePkm()) {
                 pkm.setNxtEater(agent);
-                pkm.setMin_dist(algo.shortestPathDist(agent.getSrcNode(), pkm.get_edge().getSrc()));
+                pkm.setMin_dist(temp);
             }
             agent.set_curr_fruit(nextPkms);
         }
@@ -215,6 +231,8 @@ public class Ex2 implements Runnable {
     private static int nextNode(CL_Agent agent) {
         int ans;
         if (agent.getPath() == null || agent.getPath().size() == 0) {
+            if(menu.get(agent.getID())==null)
+                return -1;
             node_data n = _ar.getGraph().getNode(menu.get(agent.getID()).get(0).get_edge().getDest());
             agent.setPath(algo.shortestPath(agent.getSrcNode(), menu.get(agent.getID()).get(0).get_edge().getSrc()), n);
         }
@@ -256,13 +274,18 @@ public class Ex2 implements Runnable {
         }
         if (change || firsRun) {
             _ar.setPokemons(curr_pkms);
+            markClosePkms(curr_pkms);
+           // currPoks=new ArrayList<>(curr_pkms);
             while (menu.containsValue(null)) {//TODO: add if numOfAgents>numOfFruits
                 for (Integer agntID : menu.keySet()) {
                     chooseTarget(balls.get(agntID));
+                  //  check= balls.get(agntID).get_curr_fruit();
                 }
             }
+
             firsRun = false;
         }
+
         for (CL_Agent agn : balls) {
             if (agn.get_curr_fruit() != fictivePkm) {
                 int dest = nextNode(agn);
