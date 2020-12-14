@@ -16,7 +16,6 @@ public class gamePanel extends JPanel {
     private Arena _ar;
     directed_weighted_graph gr;
     private gameClient.util.Range2Range _w2f;
-    MyLabel jLabel;
 
     public gamePanel(directed_weighted_graph g, Arena a) {
         super();
@@ -37,13 +36,6 @@ public class gamePanel extends JPanel {
         Range2D frame = new Range2D(rx, ry);
         directed_weighted_graph g = _ar.getGraph();
         _w2f = Arena.w2f(g, frame);
-        initLabel();
-        jLabel.updateLabel();
-    }
-
-    public void initLabel(){
-        jLabel= new MyLabel(_ar);
-        this.add(jLabel);
     }
 
     public void paint(Graphics g) {
@@ -51,16 +43,11 @@ public class gamePanel extends JPanel {
         int w = this.getWidth();
         int h = this.getHeight();
         g.clearRect(0, 0, w, h);
-//        if (_ar.getAgents().size() >= 3) back = new ImageIcon("./rcs/Back.png").getImage();
-//        if (_ar.getAgents().size() == 2) back = new ImageIcon("./rcs/Back2Agents.png").getImage();
-//        if (_ar.getAgents().size() == 1) back = new ImageIcon("./rcs/Back1Agent.png").getImage();
         g2D.drawImage(back, 0, 0, w, h, null);
         drawGraph(g);
         drawPokemons(g);
         drawAgants(g);
         drawInfo(g);
-        //jLabel.updateLabel();
-        //jLabel.repaint();
     }
 
     public void drawNode(node_data n, Graphics g) {

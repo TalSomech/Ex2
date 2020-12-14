@@ -1,5 +1,4 @@
 package gameClient;
-import api.edgeData;
 import api.edge_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;

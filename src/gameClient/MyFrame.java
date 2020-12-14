@@ -23,9 +23,7 @@ public class MyFrame extends JFrame {
 
     MyFrame(String a) {
         super(a);
-        //this.setLayout(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //addMenu();
     }
 
     public void initPanel() {
@@ -43,28 +41,5 @@ public class MyFrame extends JFrame {
     public void paint(Graphics g) {
         gP.updatePanel();
         gP.repaint();
-//	}
-//
-//	public void addMenu(){
-//		MenuBar menu=new MenuBar();
-//		Menu options=new Menu("Options");
-//		menu.add(options);
-//		this.setMenuBar(menu);
-//		login=new MenuItem("login");
-//		load=new MenuItem("load");
-//		login.addActionListener(this);
-//		load.addActionListener(this);
-//		options.add(login);
-//		options.add(load);
-//	}
-//
-//	@Override
-//	public void actionPerformed(ActionEvent e) {
-//		if(e.getSource()==load){
-//
-//		}
-//		if(e.getSource()==login){
-//
-//		}
     }
 }

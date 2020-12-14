@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class CL_Agent implements Runnable {
+public class CL_Agent {
 		public static final double EPS = 0.0001;
 		private static int _count = 0;
 		private static int _seed = 3331;
@@ -73,7 +73,6 @@ public class CL_Agent implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		//@Override
 		public int getSrcNode() {return this._curr_node.getKey();}
 
 		public String toJSON() {
@@ -186,20 +185,4 @@ public class CL_Agent implements Runnable {
 			this._sg_dt = _sg_dt;
 		}
 
-	@Override
-	public void run() {
-			boolean flag=true;
-			while(flag) {
-				while (this.get_curr_fruit() != null) {
-					try {
-						this.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				synchronized (this) {
-					Ex2.chooseTarget(this);
-				}
-			}
-	}
 }

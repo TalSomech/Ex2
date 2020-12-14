@@ -54,7 +54,7 @@ public class Arena {
 
     public void setGraph(directed_weighted_graph g) {
         this._gg = g;
-    }//init();}
+    }
 
     private void init() {
         MIN = null;
