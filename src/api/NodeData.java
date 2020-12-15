@@ -88,6 +88,11 @@ public class NodeData implements node_data, Comparable<node_data> {
         return this.tag;
     }
 
+    @Override
+    public String toString() {
+        return "key - "+key;
+    }
+
     public boolean isVis() {
         return isVis;
     }

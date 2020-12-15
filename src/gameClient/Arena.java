@@ -4,6 +4,8 @@ import api.directed_weighted_graph;
 import api.edge_data;
 import api.geo_location;
 import api.node_data;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
@@ -13,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,8 +27,8 @@ import java.util.List;
 public class Arena {
     public static final double EPS1 = 0.001, EPS2 = EPS1 * EPS1, EPS = EPS2;
     private directed_weighted_graph _gg;
-    private List<CL_Agent> _agents;
-    private List<CL_Pokemon> _pokemons;
+    private static List<CL_Agent> _agents;
+    private static List<CL_Pokemon> _pokemons;
     private List<String> _info;
     private String time;
     private static Point3D MIN = new Point3D(0, 100, 0);
@@ -121,12 +124,19 @@ public class Arena {
 
     ////////////////////////////////////////////////////
     public static List<CL_Agent> getAgents(String aa, directed_weighted_graph gg) {
+        CL_Agent c;
         ArrayList<CL_Agent> ans = new ArrayList<CL_Agent>();
         try {
             JSONObject ttt = new JSONObject(aa);
             JSONArray ags = ttt.getJSONArray("Agents");
             for (int i = 0; i < ags.length(); i++) {
-                CL_Agent c = new CL_Agent(gg, 0);
+                JsonObject trainer = (JsonObject) JsonParser.parseString(ags.get(i).toString()).getAsJsonObject();
+                int id = trainer.get("Agent").getAsJsonObject().get("id").getAsInt();
+                if(_agents==null||!_agents.contains(id))
+                c =new CL_Agent(gg, 0);
+                else{
+                    c=_agents.get(id);
+                }
                 c.update(ags.get(i).toString());
                 //c.set_curr_fruit();
                 ans.add(c);
@@ -139,6 +149,7 @@ public class Arena {
     }
 
     public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {
+       // CL_Pokemon f;
         ArrayList<CL_Pokemon> ans = new ArrayList<CL_Pokemon>();
         try {
             JSONObject ttt = new JSONObject(fs);
@@ -150,7 +161,13 @@ public class Arena {
                 double v = pk.getDouble("value");
                 //double s = 0;//pk.getDouble("speed");
                 String p = pk.getString("pos");
-                CL_Pokemon f = new CL_Pokemon(new Point3D(p), t, v, 0, null);
+               // if(!_pokemons.contains(p)) {
+                    CL_Pokemon f = new CL_Pokemon(new Point3D(p), t, v, 0, null);
+                 //   pkms.put()
+              //  }
+               // else{
+                //    f=_pokemons.get()
+                //}
                 ans.add(f);
             }
         } catch (JSONException e) {

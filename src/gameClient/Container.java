@@ -2,9 +2,8 @@ package gameClient;
 
 import api.dw_graph_algorithms;
 
-import java.util.Comparator;
 
-public class Container{
+public class Container implements  Comparable<Container>{
     private CL_Pokemon pok;
     private CL_Agent agent;
     private double dist;
@@ -16,7 +15,6 @@ public class Container{
         this.pok = pok;
         this.algo = algo;
         this.dist = algo.shortestPathDist(agn.getSrcNode(), pok.get_edge().getSrc());
-        //this.dist ;
     }
 
     public double getDist() {
@@ -31,6 +29,10 @@ public class Container{
         return agent;
     }
 
+    @Override
+    public int compareTo(Container o) {
+        return Double.compare(this.getDist(), o.getDist());
+    }
 }
 
 

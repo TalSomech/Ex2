@@ -18,7 +18,7 @@ public class Ex2 implements Runnable {
     private static boolean firsRun;
     private static boolean change = false;
     private static List<CL_Pokemon> fictivePkm;
-    private static long dt = 100;
+    private static long dt = 110;
     private static int sen, id;
     private static PriorityQueue<Container> queue;
 
@@ -40,17 +40,16 @@ public class Ex2 implements Runnable {
 
     @Override
     public void run() {
-        int ind = 0;
         game.startGame();
-        //boolean keepTheFuckRunning = true;
+        boolean keepTheFuckRunning = true;
         while (game.isRunning()) {
-       // while (keepTheFuckRunning) {
+        //while (keepTheFuckRunning) {
             try {
+                dt = 110;
                 moveAgents();
                 _win.repaint();
                 _ar.setTime("Time Left: " + (double) game.timeToEnd() / 1000);
                 Thread.sleep(dt);
-                dt = 100;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -89,7 +88,7 @@ public class Ex2 implements Runnable {
             for (CL_Pokemon pk : pkms) {
                 Arena.updateEdge(pk, _ar.getGraph());
             }
-            queue = new PriorityQueue<>(new comp());
+            queue = new PriorityQueue<>();
             markClosePkms(pkms);
             locateAgents(numOfAg, pkms);
             String lg = game.getAgents();
@@ -106,7 +105,7 @@ public class Ex2 implements Runnable {
         for (edge_data ed : ((DWGraph_DS) algo.getGraph()).getE()) {
             geo_location src = algo.getGraph().getNode(ed.getSrc()).getLocation();
             geo_location dest = algo.getGraph().getNode(ed.getDest()).getLocation();
-            double dist = src.distance(dest);
+            double dist = src.distance(dest); //TODO:change to shortest path!!!!
             if (dist < (0.001) / 2) {
                 ((edgeData) ed).setShort(true);
             }
@@ -114,41 +113,47 @@ public class Ex2 implements Runnable {
     }
 
     public static void markClosePkms(List<CL_Pokemon> pkm) {
-        for (int i = 0; i <= pkm.size() - 1; i++) {
-            for (int j = i; j <= pkm.size() - 1; j++) {
-                double dist = pkm.get(i).getLocation().distance(pkm.get(j).getLocation());
-                if (dist < 0.006) {
-                    pkm.get(i).getClosePkm().add(pkm.get(j));
-                    pkm.get(j).getClosePkm().add(pkm.get(i));
+        for (CL_Pokemon curpk:pkm){
+            for (CL_Pokemon othpkm:pkm) {
+                List<node_data> dista = algo.shortestPath(curpk.get_edge().getSrc(), othpkm.get_edge().getSrc());
+                if(dista.size()<2 && curpk!=othpkm){
+                    if(othpkm.getClspkm()==null){
+                        curpk.getClosePkm().add(othpkm);
+                        othpkm.setClspkm(curpk);
+                    }
+                    else{
+                       othpkm.getClspkm().getClosePkm().add(curpk);
+                       curpk.setClspkm(curpk.getClspkm());
+                    }
                 }
             }
         }
+
     }
 
     private static void locateAgents(int numOfAg, List<CL_Pokemon> pkms) {
         if (algo.isConnected()) {
+            PriorityQueue<CL_Pokemon> q= new PriorityQueue<CL_Pokemon>(new Comparator<CL_Pokemon>() {
+                @Override
+                public int compare(CL_Pokemon o1, CL_Pokemon o2) {
+                    return Math.max(o1.getClosePkm().size(),o2.getClosePkm().size());
+                }
+            });
             int numOfAgentLocated = 0;
             for (CL_Pokemon pkm : pkms) {
-                if (pkm.getClosePkm().size() > 1) {
-                    int nn = pkm.get_edge().getDest();
-                    if (pkm.getType() < 0) {
-                        nn = pkm.get_edge().getSrc();
-                        game.addAgent(nn);
-                        numOfAgentLocated++;
-                    }
-                }
+                q.add(pkm);
             }
-            if (numOfAgentLocated < numOfAg) {
-                for (int i = 0; i < numOfAg - numOfAgentLocated; ++i) {
-                    int ind = i % pkms.size();
-                    CL_Pokemon c = pkms.get(ind);
-                    int nn = c.get_edge().getDest();
-                    if (c.getType() < 0) {
-                        nn = c.get_edge().getSrc();
-                    }
-                    game.addAgent(nn);
-                }
+            for (int i=0; i<numOfAg&&i<pkms.size(); i++){
+                game.addAgent(q.poll().get_edge().getSrc());
             }
+//            if (numOfAgentLocated < numOfAg) {
+//                for (int i = 0; i < numOfAg - numOfAgentLocated; ++i) {
+//                    int ind = i % pkms.size();
+//                    CL_Pokemon c = pkms.get(ind);
+//                    int nn = c.get_edge().getSrc();
+//                    game.addAgent(nn);
+//                }
+//            }
         } else {
             List<List<node_data>> components = ((DWGraph_Algo) algo).getComponents();
             int counter = 1;
@@ -157,7 +162,6 @@ public class Ex2 implements Runnable {
                 game.addAgent(nn);
                 counter++;
             }
-
             while (counter < numOfAg) {
                 int max = 0;
                 for (int i = 0; i < components.size(); i++) {
@@ -195,15 +199,17 @@ public class Ex2 implements Runnable {
         for (int a = 0; a < curr_pkms.size(); a++) {
             Arena.updateEdge(curr_pkms.get(a), _ar.getGraph());
         }
+       // System.out.println("1");
         for (int a = 0; a < balls.size(); a++) {
             Arena.updateEdgeForAgent(balls.get(a), _ar.getGraph());
         }
         for (CL_Agent agnt : balls) {
-            if (agnt.getPath() == null) {
+            if (firsRun||agnt.getPath().isEmpty()) {
                 change = true;
                 break;
             }
         }
+
         if (change || firsRun) {
             _ar.setPokemons(curr_pkms);
             for (CL_Agent agent : balls) {
@@ -211,47 +217,57 @@ public class Ex2 implements Runnable {
                     queue.add(new Container(agent, pkm, algo));
                 }
             }
-            chooseTarget2();
+            chooseTarget();
             firsRun = false;
         }
 
         for (CL_Agent agn : balls) {
             if (agn.get_curr_fruit() != fictivePkm) {
-                int dest = nextNode2(agn);
+                int dest = nextNode(agn);
                 game.chooseNextEdge(agn.getID(), dest);
                 _ar.set_info("Agent: " + agn.getID() + ", score: " + agn.getValue(), agn.getID());
+                System.out.println(agn.getPath().toString());
             }
         }
     }
 
 
-    private static void chooseTarget2() {
+    private static void chooseTarget() {
         while (!queue.isEmpty()) {
             Container c = queue.iterator().next();
-            if (c.getPok().getNxtEater() == null && c.getAgent().get_curr_fruit() == null) {
+            if (c.getPok().getNxtEater() == null && c.getAgent().get_curr_fruit() == null && c.getDist() != -1) {
                 c.getAgent().set_curr_fruit(c.getPok());
                 c.getPok().setNxtEater(c.getAgent());
                 node_data n = _ar.getGraph().getNode(c.getPok().get_edge().getDest());
                 c.getAgent().setPath(algo.shortestPath(c.getAgent().getSrcNode(), c.getPok().get_edge().getSrc()), n);
             }
+            //c.getAgent().setLastEaten(c.getAgent().get_curr_fruit().toString());
             queue.poll();
         }
     }
 
-    private static int nextNode2(CL_Agent agent) {
+    private static int nextNode(CL_Agent agent) {
         int ans;
         if (agent.getPath().isEmpty()) {
             return -1;
         }
         if (agent.getPath().size() == 1) {
-            edge_data ed = _ar.getGraph().getEdge(agent.getSrcNode(), agent.getPath().get(0).getKey());
-            if (((edgeData) ed).getIsShort()) dt = 30;
-            if ((agent.getSpeed() >= 5) && (ed.getWeight() < 2)) dt = 30;
             ans = agent.getPath().get(0).getKey();
+            agent.getPath().remove(0);
             return ans;
         }
+//        if(agent.getLastEaten().equals(agent.get_curr_fruit().toString())){
+//            edge_data ed = _ar.getGraph().getEdge(agent.getSrcNode(), agent.getPath().get(0).getKey());
+//            if (((edgeData) ed).getIsShort()) {
+//                dt = 30;
+//            }
+//            if ((agent.getSpeed() >= 5) && (ed.getWeight() < 1.9)) {
+//                dt = 50;
+//            }
+//        }
         ans = agent.getPath().get(1).getKey();
         agent.setNextNode(agent.getPath().get(1).getKey());
+        agent.getPath().remove(0);
         return ans;
     }
 }

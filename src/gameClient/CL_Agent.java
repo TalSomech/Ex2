@@ -1,13 +1,12 @@
 package gameClient;
 
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.geo_location;
-import api.node_data;
+import api.*;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class CL_Agent {
 		public static final double EPS = 0.0001;
@@ -24,6 +23,7 @@ public class CL_Agent {
 		private long _sg_dt;
 		private double _value;
 		private List<node_data> path;
+		private String lastEaten;
 
 	public List<node_data> getPath() {
 		return path;
@@ -38,12 +38,22 @@ public class CL_Agent {
 		path.add(n);
 	}
 
+	public String getLastEaten() {
+		return lastEaten;
+	}
+
+	public void setLastEaten(String lastEaten) {
+		String s= lastEaten;
+		this.lastEaten =s;
+	}
+
 	public CL_Agent(directed_weighted_graph g, int start_node) {
 			_gg = g;
 			setMoney(0);
 			this._curr_node = _gg.getNode(start_node);
 			_pos = _curr_node.getLocation();
 			_id = -1;
+			path=new LinkedList<>();
 			setSpeed(0);
 		}
 
@@ -185,4 +195,16 @@ public class CL_Agent {
 			this._sg_dt = _sg_dt;
 		}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CL_Agent agent = (CL_Agent) o;
+		return _id == agent._id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(_id);
+	}
 }

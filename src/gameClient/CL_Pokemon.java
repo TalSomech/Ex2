@@ -15,6 +15,7 @@ public class CL_Pokemon {
 	private double min_dist;
 	private int min_ro;
 	private CL_Agent nxtEater;
+	private CL_Pokemon clspkm;
 	private List<CL_Pokemon> closePkm;
 	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e) {
 		_type = t;
@@ -26,6 +27,7 @@ public class CL_Pokemon {
 		min_ro = -1;
 		nxtEater= null;
 		closePkm= new ArrayList<>();
+
 	}
 
 	public List<CL_Pokemon> getClosePkm() {
@@ -82,19 +84,33 @@ public class CL_Pokemon {
 		return min_ro;
 	}
 
+	public CL_Pokemon getClspkm() {
+		return clspkm;
+	}
+
+	public void setClspkm(CL_Pokemon clspkm) {
+		this.clspkm = clspkm;
+	}
+
+//	@Override
+//	public boolean equals(Object o) {
+//		if (this == o) return true;
+//		if (o == null || getClass() != o.getClass()) return false;
+//		CL_Pokemon that = (CL_Pokemon) o;
+//		return Double.compare(that._value, _value) == 0 &&
+//				_type == that._type &&
+//				Objects.equals(_pos, that._pos);
+//	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		CL_Pokemon that = (CL_Pokemon) o;
-		return Double.compare(that._value, _value) == 0 &&
-				_type == that._type &&
-				Objects.equals(_pos, that._pos);
+		return Objects.equals(_pos, that._pos);
 	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(_value, _type, _pos);
+		return Objects.hashCode(_pos);//Objects.hash(_value, _type, _pos);
 	}
 
 	public void setMin_ro(int min_ro) {
