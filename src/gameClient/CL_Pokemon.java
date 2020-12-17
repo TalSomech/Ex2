@@ -4,6 +4,7 @@ import gameClient.util.Point3D;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ public class CL_Pokemon {
 	private int min_ro;
 	private CL_Agent nxtEater;
 	private CL_Pokemon clspkm;
-	private List<CL_Pokemon> closePkm;
+	private int closePkm;
 	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e) {
 		_type = t;
 	//	_speed = s;
@@ -26,14 +27,16 @@ public class CL_Pokemon {
 		min_dist = Integer.MAX_VALUE;
 		min_ro = -1;
 		nxtEater= null;
-		closePkm= new ArrayList<>();
+		closePkm= 0;
 
 	}
 
-	public List<CL_Pokemon> getClosePkm() {
+	public int getClosePkm() {
 		return closePkm;
 	}
-
+	public void setClosePkm(){
+		this.closePkm++;
+	}
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
 		try {

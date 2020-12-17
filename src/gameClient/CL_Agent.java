@@ -33,18 +33,18 @@ public class CL_Agent {
 //		this._curr_edge=src;
 //	}
 
-	public void setPath(List<node_data> path, node_data n) {
-		this.path = path;
-		path.add(n);
-	}
-
 	public String getLastEaten() {
 		return lastEaten;
 	}
 
 	public void setLastEaten(String lastEaten) {
-		String s= lastEaten;
-		this.lastEaten =s;
+		this.lastEaten= lastEaten;
+	}
+
+
+	public void setPath(List<node_data> path, node_data n) {
+		this.path = path;
+		path.add(n);
 	}
 
 	public CL_Agent(directed_weighted_graph g, int start_node) {
@@ -152,7 +152,6 @@ public class CL_Agent {
 		public double getSpeed() {
 			return this._speed;
 		}
-
 		public void setSpeed(double v) {
 			this._speed = v;
 		}

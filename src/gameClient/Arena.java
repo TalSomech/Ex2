@@ -14,10 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class represents a multi Agents Arena which move on a graph - grabs Pokemons and avoid the Zombies.
@@ -35,7 +32,7 @@ public class Arena {
     private static Point3D MAX = new Point3D(0, 100, 0);
 
     public Arena() {
-        ;
+
         _info = new ArrayList<String>(4);
         _info.add(" ");
         time = "";
@@ -124,7 +121,7 @@ public class Arena {
 
     ////////////////////////////////////////////////////
     public static List<CL_Agent> getAgents(String aa, directed_weighted_graph gg) {
-        CL_Agent c;
+        CL_Agent c;boolean flag;
         ArrayList<CL_Agent> ans = new ArrayList<CL_Agent>();
         try {
             JSONObject ttt = new JSONObject(aa);
@@ -132,10 +129,15 @@ public class Arena {
             for (int i = 0; i < ags.length(); i++) {
                 JsonObject trainer = (JsonObject) JsonParser.parseString(ags.get(i).toString()).getAsJsonObject();
                 int id = trainer.get("Agent").getAsJsonObject().get("id").getAsInt();
-                if(_agents==null||!_agents.contains(id))
-                c =new CL_Agent(gg, 0);
+                CL_Agent is = isIn_Agents(id);
+                if(is==null){
+                    c =new CL_Agent(gg, 0);
+                }
                 else{
-                    c=_agents.get(id);
+                    c=is;
+                   // c.setLastEaten(is.getLastEaten());
+                   c.set_curr_fruit(null);
+                   c.setPath(new LinkedList<>(),null);
                 }
                 c.update(ags.get(i).toString());
                 //c.set_curr_fruit();
@@ -146,6 +148,14 @@ public class Arena {
             e.printStackTrace();
         }
         return ans;
+    }
+
+    private static CL_Agent isIn_Agents (int agent){
+        if(_agents ==null) return null;
+        for (CL_Agent ag:_agents) {
+            if (ag.getID()==agent) return ag;
+        }
+        return null;
     }
 
     public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {

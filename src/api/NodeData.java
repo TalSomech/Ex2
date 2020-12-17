@@ -125,7 +125,7 @@ public class NodeData implements node_data, Comparable<node_data> {
     }
 
     ////////////////////////////////////////////GeoLocation////////////////////////////////////////////////
-     class GeoLocation implements geo_location {
+    class GeoLocation implements geo_location {
         double x, y, z;
 
         public GeoLocation(double x, double y, double z) {
