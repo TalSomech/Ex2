@@ -55,13 +55,20 @@ LIKE THIS:
 
 4. **STEP FOUR**
 
+You will be able to chack out the time remaining and the pokeballs' scores here:
+
+![timeNscores](https://user-images.githubusercontent.com/69470263/102636774-bd61cf80-415d-11eb-8007-caa48d1edc8e.png)
+
+
+5. **STEP FIVE**
+
 Your score will pop up in the end
 
 LIKE THIS:
 
 ![scoreScreen](https://user-images.githubusercontent.com/69470263/102616598-79140680-4140-11eb-899a-df70fce7e403.png)
 
-5. **STEP FIVE**
+6. **STEP SIX**
 
 To exit simpley click the X button.
 
