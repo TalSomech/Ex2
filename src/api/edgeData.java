@@ -16,11 +16,11 @@ public class edgeData implements edge_data, Serializable {
         this.w = w;
         this.tag = 0;
         this.info = "";
-        this.isShort=false;
+        this.isShort = false;
     }
 
     edgeData(edgeData other) {
-        isShort= other.isShort;
+        isShort = other.isShort;
         this.src = other.src;
         this.dest = other.dest;
         this.info = other.info;
@@ -87,18 +87,4 @@ public class edgeData implements edge_data, Serializable {
     }
 
 
-    ////////////////////////////////////////////edgeLocation////////////////////////////////////////////////
-
-    class edgeLocation implements edge_location { //TODO: create this
-
-        @Override
-        public edge_data getEdge() {
-            return null;
-        }
-
-        @Override
-        public double getRatio() {
-            return 0;
-        }
-    }
 }

@@ -20,7 +20,7 @@ public class NodeData implements node_data, Comparable<node_data> {
         this.tag = -1;
         neighbors = new HashMap<>();
         cToMe = new ArrayList<>();
-        loc = new GeoLocation(0, 0, 0);
+        loc = new GeoLocation(-5, -5, -5);
         this.info = loc.toString();
     }
 
@@ -52,7 +52,8 @@ public class NodeData implements node_data, Comparable<node_data> {
     }
 
     @Override
-    public geo_location getLocation() { //TODO: create this
+    public geo_location getLocation() {
+        if (loc.x==-5) return null;
         return loc;
     }
 

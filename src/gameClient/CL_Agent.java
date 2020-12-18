@@ -124,18 +124,15 @@ public class CL_Agent {
 			return ans;
 		}
 		public int getID() {
-			// TODO Auto-generated method stub
+
 			return this._id;
 		}
 
 		public geo_location getLocation() {
-			// TODO Auto-generated method stub
 			return _pos;
 		}
 
-
 		public double getValue() {
-			// TODO Auto-generated method stub
 			return this._value;
 		}
 

@@ -21,7 +21,6 @@ public class Ex2 implements Runnable {
     private static long dt = 110;
     private static int sen, id;
     private static PriorityQueue<Container> queue;
-    private static int counter=0;
 
     public static void main(String[] args) {
         if (args.length == 2) {
@@ -34,6 +33,7 @@ public class Ex2 implements Runnable {
             sen = Integer.parseInt(SEN);
         }
         game = Game_Server_Ex2.getServer(sen);
+      //  game.login(id);
         init(game);
         Thread client = new Thread(new Ex2());
         client.start();
@@ -42,7 +42,7 @@ public class Ex2 implements Runnable {
     @Override
     public void run() {
         game.startGame();
-        boolean keepTheFuckRunning = true;
+      // boolean keepTheFuckRunning = true;
        while (game.isRunning()) {
         //while (keepTheFuckRunning) {
             try {
@@ -79,7 +79,6 @@ public class Ex2 implements Runnable {
         _ar.setPokemons(pkms);
         markProblematicEdges();
         _win = new MyFrame("Ex2");
-        //menu = new HashMap<>();
         _win.setSize(1000, 700);
         try {
             String info = game.toString();
@@ -139,21 +138,12 @@ public class Ex2 implements Runnable {
                     return o2.getClosePkm()-o1.getClosePkm();
                 }
             });
-            int numOfAgentLocated = 0;
             q.addAll(_ar.getPokemons());
             for (int i = 0; i < numOfAg && i < pkms.size(); i++) {
                 CL_Pokemon nn = q.poll();
-                //int dk=q.poll().get_edge().getSrc();
                 game.addAgent(nn.get_edge().getSrc());
             }
-//            if (numOfAgentLocated < numOfAg) {
-//                for (int i = 0; i < numOfAg - numOfAgentLocated; ++i) {
-//                    int ind = i % pkms.size();
-//                    CL_Pokemon c = pkms.get(ind);
-//                    int nn = c.get_edge().getSrc();
-//                    game.addAgent(nn);
-//                }
-//            }
+
         } else {
             List<List<node_data>> components = ((DWGraph_Algo) algo).getComponents();
             int counter = 1;
@@ -219,7 +209,6 @@ public class Ex2 implements Runnable {
             chooseTarget();
             firsRun = false;
         }
-     //   CL_Agent a=_ar.getAgents().get(0);
         int k=0;
         for (CL_Agent agn : _ar.getAgents()) {
             if (agn.get_curr_fruit() != fictivePkm) {
@@ -236,8 +225,6 @@ public class Ex2 implements Runnable {
             if (c.getPok().getNxtEater() == null && c.getAgent().get_curr_fruit() == null && c.getDist() != -1) {
                 if(c.getAgent().getLastEaten()!=null){
                     if(c.getAgent().getLastEaten().equals(c.getPok().getLocation().toString())&&c.getAgent().getPath().size()==1){
-                        System.out.println(counter);
-                        counter++;
                         dt=30;
                     }
                 }
@@ -250,15 +237,6 @@ public class Ex2 implements Runnable {
         }
     }
 
-    private static void setDT(){
-//                edge_data ed = _ar.getGraph().getEdge(agent.getSrcNode(), agent.getPath().get(0).getKey());
-//        if (((edgeData) ed).getIsShort()) {
-//            dt = 30;
-//        }
-//        if ((agent.getSpeed() >= 5) && (ed.getWeight() < 1.9)) {
-//            dt = 50;
-//        }
-    }
 
     private static int nextNode(CL_Agent agent) {
         int ans;
@@ -273,13 +251,6 @@ public class Ex2 implements Runnable {
             return ans;
         }
 
-//        edge_data ed = _ar.getGraph().getEdge(agent.getSrcNode(), agent.getPath().get(0).getKey());
-//        if (((edgeData) ed).getIsShort()) {
-//            dt = 30;
-//        }
-//        if ((agent.getSpeed() >= 5) && (ed.getWeight() < 1.9)) {
-//            dt = 50;
-//        }
 
         ans = agent.getPath().get(1).getKey();
         agent.setNextNode(agent.getPath().get(1).getKey());
