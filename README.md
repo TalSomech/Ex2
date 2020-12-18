@@ -55,7 +55,7 @@ LIKE THIS:
 
 4. **STEP FOUR**
 
-You will be able to chack out the time remaining and the pokeballs' scores here:
+You will be able to check out the time remaining and the pokeballs' scores here:
 
 ![timeNscores](https://user-images.githubusercontent.com/69470263/102636774-bd61cf80-415d-11eb-8007-caa48d1edc8e.png)
 
@@ -76,7 +76,7 @@ To exit simpley click the X button.
 
 We are Neta Roth and Tal Somech, sencond year student in the Ariel University.
 
-You can catch up our latest works in the links below:
+You can catch up our latest work in the links below:
 
 * NETA ROTH:
 [Neta's github](https://github.com/neta-r)
