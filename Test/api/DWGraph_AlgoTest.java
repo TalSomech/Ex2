@@ -88,14 +88,16 @@ class DWGraph_AlgoTest {
 
     @Test
     void shortestPathDist() {
-        DWGraph_DS g1= init(5,10);
+        DWGraph_DS g1= init(10,20);
         DWGraph_Algo g= new DWGraph_Algo(g1);
-        assertEquals(g.shortestPathDist(2,0),11.07,0.01);
+      //  System.out.println(g.shortestPath(2,0));
+        assertEquals(g.shortestPathDist(2,0),-1,0.01);
         g1.connect(2,0,12);
-        assertEquals(g.shortestPathDist(2,0),11.07,0.01);
-        assertEquals(g.shortestPathDist(4,3),1.90,0.01);
-        g1.removeEdge(3,2);
-        assertEquals(g.shortestPathDist(3,2),-1,0.01);
+        assertEquals(g.shortestPathDist(2,0),12,0.01);
+        assertEquals(g.shortestPathDist(9,6),1.39,0.01);
+        g1.removeEdge(9,6);
+        g1.removeEdge(9,5);
+        assertEquals(g.shortestPathDist(9,6),-1,0.01);
         assertEquals(g.shortestPathDist(3,3),0,0.01);
     }
 
@@ -117,7 +119,7 @@ class DWGraph_AlgoTest {
         assertEquals(g.shortestPath(4,3),res);
         res.clear();
         g1.removeEdge(3,2);
-        assertEquals(g.shortestPath(3,2),res); //not connected
+        assertEquals(g.shortestPath(3,2),null); //not connected
         assertEquals(g.shortestPath(0,0),res); //no path between a node to itself
     }
 

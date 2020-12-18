@@ -100,8 +100,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         path.add(0, desti);
         if (!path.contains(graph.getNode(src))) {
-            path.clear();
-            return path;
+           return null;
         }
         return path;
     }
@@ -129,6 +128,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             writer.beginArray();
             for (node_data n : graph.getV()) {
                 writer.beginObject();
+                if(n.getLocation()!=null)
                 writer.name("pos").value(n.getLocation().toString());
                 writer.name("id").value(n.getKey());
                 writer.endObject();
@@ -210,7 +210,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             JsonArray jE = j.get("Edges").getAsJsonArray();
             for (JsonElement node : jN) {
                 key = ((JsonObject) node).get("id").getAsInt();
-                pos = ((JsonObject) node).get("pos").getAsString();
+                pos = ((JsonObject) node).get("pos")==null? "-5,-5,-5":((JsonObject) node).get("pos").getAsString();
                 g.addNode(new NodeData(key, pos));
             }
             for (JsonElement edge : jE) {

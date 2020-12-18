@@ -13,7 +13,7 @@ public class popUp {
                 JOptionPane.QUESTION_MESSAGE,
                 pikachu,
                 null,
-                0
+                207603978
         );
         return id;
     }

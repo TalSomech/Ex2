@@ -33,7 +33,7 @@ public class Ex2 implements Runnable {
             sen = Integer.parseInt(SEN);
         }
         game = Game_Server_Ex2.getServer(sen);
-      //  game.login(id);
+
         init(game);
         Thread client = new Thread(new Ex2());
         client.start();
@@ -42,12 +42,14 @@ public class Ex2 implements Runnable {
     @Override
     public void run() {
         game.startGame();
-      // boolean keepTheFuckRunning = true;
-       while (game.isRunning()) {
-        //while (keepTheFuckRunning) {
+        game.login(id);
+        // boolean keepTheFuckRunning = true;
+        while (game.isRunning()) {
+            //while (keepTheFuckRunning) {
             try {
-                moveAgents();
                 dt = 110;
+                moveAgents();
+
                 _win.repaint();
                 _ar.setTime("Time Left: " + (double) game.timeToEnd() / 1000);
                 Thread.sleep(dt);
@@ -135,7 +137,7 @@ public class Ex2 implements Runnable {
             PriorityQueue<CL_Pokemon> q = new PriorityQueue<CL_Pokemon>(new Comparator<CL_Pokemon>() {
                 @Override
                 public int compare(CL_Pokemon o1, CL_Pokemon o2) {
-                    return o2.getClosePkm()-o1.getClosePkm();
+                    return o2.getClosePkm() - o1.getClosePkm();
                 }
             });
             q.addAll(_ar.getPokemons());
@@ -185,7 +187,7 @@ public class Ex2 implements Runnable {
         List<CL_Agent> balls = Arena.getAgents(lg, _ar.getGraph());
         String fs = game.getPokemons();
         List<CL_Pokemon> curr_pkms = Arena.json2Pokemons(fs);
-      //  _ar.setAgents(balls);
+        _ar.setAgents(balls);
         for (int a = 0; a < curr_pkms.size(); a++) {
             Arena.updateEdge(curr_pkms.get(a), _ar.getGraph());
         }
@@ -209,7 +211,7 @@ public class Ex2 implements Runnable {
             chooseTarget();
             firsRun = false;
         }
-        int k=0;
+        int k = 0;
         for (CL_Agent agn : _ar.getAgents()) {
             if (agn.get_curr_fruit() != fictivePkm) {
                 int dest = nextNode(agn);
@@ -223,9 +225,10 @@ public class Ex2 implements Runnable {
         while (!queue.isEmpty()) {
             Container c = queue.iterator().next();
             if (c.getPok().getNxtEater() == null && c.getAgent().get_curr_fruit() == null && c.getDist() != -1) {
-                if(c.getAgent().getLastEaten()!=null){
-                    if(c.getAgent().getLastEaten().equals(c.getPok().getLocation().toString())&&c.getAgent().getPath().size()==1){
-                        dt=30;
+                if (c.getAgent().getLastEaten() != null) {
+                    if(c.getAgent().getPath().size()==1)
+                    if (c.getAgent().getLastEaten().equals(c.getPok().getLocation().toString())&&c.getAgent().getSpeed()>=5) {
+                        dt = 35;
                     }
                 }
                 c.getAgent().set_curr_fruit(c.getPok());
@@ -245,7 +248,6 @@ public class Ex2 implements Runnable {
         }
         if (agent.getPath().size() == 1) {
             agent.setLastEaten(agent.get_curr_fruit().getLocation().toString());
-           // agent.set_curr_fruit(null);
             ans = agent.getPath().get(0).getKey();
             agent.getPath().remove(0);
             return ans;

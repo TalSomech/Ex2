@@ -19,15 +19,6 @@ public class edgeData implements edge_data, Serializable {
         this.isShort = false;
     }
 
-    edgeData(edgeData other) {
-        isShort = other.isShort;
-        this.src = other.src;
-        this.dest = other.dest;
-        this.info = other.info;
-        this.tag = other.tag;
-        this.w = other.w;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,6 +47,10 @@ public class edgeData implements edge_data, Serializable {
     @Override
     public double getWeight() {
         return this.w;
+    }
+
+    public void setW(double w) {
+        this.w = w;
     }
 
     @Override

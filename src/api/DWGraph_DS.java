@@ -1,10 +1,7 @@
 package api;
 
 
-import java.io.Serializable;
 import java.util.*;
-
-////////////////////////////////////////////main class////////////////////////////////////////////////
 
 public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer, node_data> graph;
@@ -30,15 +27,6 @@ public class DWGraph_DS implements directed_weighted_graph {
         this.ModeCount = other.getMC();
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        DWGraph_DS that = (DWGraph_DS) o;
-//        return numOfEdges == that.numOfEdges &&
-//                ModeCount == that.ModeCount &&
-//                Objects.equals(graph, that.graph);
-//    }
 
     @Override
     public boolean equals(Object obj){
@@ -72,7 +60,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     @Override
     public edge_data getEdge(int src, int dest) {
         if (!((NodeData) graph.get(src)).neighbors.containsKey(dest)) return null;
-        numOfEdges++;
+        //numOfEdges++;
         return ((NodeData) graph.get(src)).neighbors.get(dest);
     }
 
@@ -86,7 +74,11 @@ public class DWGraph_DS implements directed_weighted_graph {
     @Override
     public void connect(int src, int dest, double w) {
         if (src == dest) return;
-        if (graph.get(src) == null || graph.get(dest) == null || w < 0||((NodeData) graph.get(src)).neighbors.containsKey(dest)) return;
+        if (graph.get(src) == null || graph.get(dest) == null || w < 0) return;
+        if (this.getEdge(src,dest)!=null){
+            ((edgeData) this.getEdge(src,dest)).setW(w);
+            return;
+        }
         ((NodeData) graph.get(src)).neighbors.put(dest, new edgeData(src, dest, w));
         ((NodeData) graph.get(dest)).cToMe.add(src);
         ModeCount++;
