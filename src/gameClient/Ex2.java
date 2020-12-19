@@ -21,10 +21,15 @@ public class Ex2 implements Runnable {
     private static PriorityQueue<Container> queue;
 
     public static void main(String[] args) {
-        int sen;
+        int sen=11;
         if (args.length == 2) {
+            try{
             id = Integer.parseInt(args[0]);
             sen = Integer.parseInt(args[1]);
+            }catch (NumberFormatException e){
+                System.out.println("invalid input , try again");
+                System.exit(0);
+            }
         } else {
             id = popUp.getId();
             sen = popUp.getSen();

@@ -10,6 +10,8 @@ import java.awt.*;
 public class scores extends JFrame{
     private Image back;
     private Graphics2D g2D;
+    private int grade;
+    private int moves;
     public static game_service game;
     scores( game_service game) {
         super();
@@ -19,16 +21,17 @@ public class scores extends JFrame{
         repaint();
     }
 
-    public int getGrade (){
-        int grade=0;
+    public void getGrade (){
+         grade=0;
+         moves=0;
         try {
             JSONObject line = new JSONObject(game.toString());
             JSONObject bla = line.getJSONObject("GameServer");
             grade = bla.getInt("grade");
+            moves = bla.getInt("moves");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return grade;
     }
 
     public void paint(Graphics g) {
@@ -38,8 +41,12 @@ public class scores extends JFrame{
         g.clearRect(0, 0, w, h);
         g2D.drawImage(back, 0, 0, w, h, null);
         g2D.setFont(new Font("OCR A Extended", Font.PLAIN, (this.getHeight() * this.getWidth()) /12000));
-        String s= "YOU'RE GRADE IS:"+(getGrade());
+        getGrade();
+        String s= "YOU'RE GRADE IS:"+(grade);
+        String k = "NUMBER OF MOVES: "+moves;
         drawCenteredString(s, this.getWidth(), this.getHeight(), g);
+        drawCenteredString(k, this.getWidth(), this.getHeight()+40, g);
+
     }
     public void drawCenteredString(String s, int w, int h, Graphics g) {
         FontMetrics fm = g.getFontMetrics();
