@@ -35,7 +35,7 @@ Choose a scenario number, aka- the level you want to play.
 
 LIKE THIS:
 
-![senScreen](https://user-images.githubusercontent.com/69470263/102616526-5b46a180-4140-11eb-910e-95db2aa077b5.png)
+![senScreen](https://user-images.githubusercontent.com/69470263/102688214-de79fd00-41fd-11eb-8510-7c537eac8d1a.png)
 
 
 Another way to do it is to type the scenario number in the command line.
