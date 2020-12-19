@@ -46,7 +46,7 @@ public class Ex2 implements Runnable {
         game.login(id);
         while (game.isRunning()) {
             try {
-                dt = 100;
+                dt = 110;
                 moveAgents();
                 _win.repaint();
                 _ar.setTime("Time Left: " + (double) game.timeToEnd() / 1000);
@@ -209,8 +209,8 @@ public class Ex2 implements Runnable {
                         c.getAgent().counter++;
                        c.getAgent().set_SDT(dt,c.getPok());
                        dt=c.getAgent().get_sg_dt();
-                       if(c.getAgent().counter>2 && dt==100){
-                           dt=35;
+                       if(c.getAgent().counter>3 && dt==110){
+                           dt=30;
                        }
                     }
                 }

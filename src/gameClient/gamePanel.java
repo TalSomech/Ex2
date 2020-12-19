@@ -30,6 +30,7 @@ public class gamePanel extends JPanel {
     /**
      * is the function that set the size of
      * the panel and the graph size according to the given height and width (uses w2f function of the arena)
+     *
      */
     public void updatePanel() {
         double j=((this.getHeight()*this.getWidth())/4000);
@@ -41,6 +42,11 @@ public class gamePanel extends JPanel {
         _w2f = Arena.w2f(g, frame);
     }
 
+    /**
+     *function is the function that draws everything in the graph in order to divide
+     * the work it uses functions such as "drawGraph", "drawPokemons", "drawAgents", "drawInfo".
+     * @param g
+     */
     public void paint(Graphics g) {
         g2D = (Graphics2D) g;
         int w = this.getWidth();
@@ -53,6 +59,12 @@ public class gamePanel extends JPanel {
         drawInfo(g);
     }
 
+    /**
+     * is the function that draws the vertices in the shape of a circle.
+     * Uses the geoLocation of the nodes in the graph and the fillOval function of the JPanel.
+     * @param n
+     * @param g
+     */
     public void drawNode(node_data n, Graphics g) {
         geo_location p = n.getLocation();
         geo_location f = this._w2f.world2frame(p);
@@ -60,6 +72,11 @@ public class gamePanel extends JPanel {
         g.drawString("" + n.getKey(), (int) f.x(), (int) f.y() - 4 * 5);
     }
 
+    /**
+     *  is the function that draws the graph,
+     *  it goes over g's vertices and edges and calles drawNode and drawEdge functions when needed.
+     * @param g
+     */
     public void drawGraph(Graphics g) {
         g2D = (Graphics2D) g;
         Iterator<node_data> itr = gr.getV().iterator();
