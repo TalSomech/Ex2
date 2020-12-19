@@ -41,13 +41,10 @@ public class Ex2 implements Runnable {
     public void run() {
         game.startGame();
         game.login(id);
-        // boolean keepTheFuckRunning = true;
         while (game.isRunning()) {
-            //while (keepTheFuckRunning) {
             try {
                 dt = 100;
                 moveAgents();
-
                 _win.repaint();
                 _ar.setTime("Time Left: " + (double) game.timeToEnd() / 1000);
                 Thread.sleep(dt);
@@ -113,7 +110,6 @@ public class Ex2 implements Runnable {
                 }
             }
         }
-
     }
 
     private static void locateAgents(int numOfAg, List<CL_Pokemon> pkms) {
