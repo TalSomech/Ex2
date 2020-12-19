@@ -3,7 +3,11 @@ package api;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
+/**
+ * a class which implements the node_data interface
+ * used to create a node in a graph
+ * this class represents a single vertex in the graph
+ */
 public class NodeData implements node_data, Comparable<node_data> {
     private int key;
     private GeoLocation loc;
@@ -15,6 +19,7 @@ public class NodeData implements node_data, Comparable<node_data> {
     private transient boolean isVis;
     private transient node_data pred;
 
+
     public NodeData(int key) {
         this.key = key;
         this.tag = -1;
@@ -24,7 +29,11 @@ public class NodeData implements node_data, Comparable<node_data> {
         this.info = loc.toString();
     }
 
-
+    /**
+     * copy constructor
+     * @param key
+     * @param s
+     */
     public NodeData(int key, String s) {
         this.key = key;
         this.tag = -1;
@@ -126,6 +135,11 @@ public class NodeData implements node_data, Comparable<node_data> {
     }
 
     ////////////////////////////////////////////GeoLocation////////////////////////////////////////////////
+
+    /**
+     * this class implements geo_location
+     * it represents a 3D Position by three vectors , x,y,z of a single vertex in the graph
+     */
     class GeoLocation implements geo_location {
         double x, y, z;
 

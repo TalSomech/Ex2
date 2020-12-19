@@ -54,6 +54,11 @@ public class CL_Agent {
         setSpeed(0);
     }
 
+    /**
+     * update the current agent in refrence to the status of the game and server
+     * , it receive the current agent status via the server in JSON format and translate it to an agent object.
+     * @param json
+     */
     public void update(String json) {
         JSONObject line;
         try {
@@ -85,6 +90,10 @@ public class CL_Agent {
         return this._curr_node.getKey();
     }
 
+    /**
+     * turns the current agent's status and values to JSON.
+     * @return
+     */
     public String toJSON() {
         int d = this.getNextNode();
         return "{\"Agent\":{"
@@ -166,6 +175,13 @@ public class CL_Agent {
         this._curr_edge = _curr_edge;
     }
 
+    /**
+     *  a function which have a getter and setter , it receive a long and pokemon
+     *  and if the said pokemon is a pokemon in which the agent is having a hard time to eat
+     *  , SDT caculates the new number to send to the server so the agent will succeed to eat the pokemon.
+     * @param ddtt
+     * @param k
+     */
     public void set_SDT(long ddtt, CL_Pokemon k) {
         long ddt = ddtt;
         if (this._curr_edge != null) {
@@ -180,8 +196,8 @@ public class CL_Agent {
             double norm = dist / de;
             double dt = w * norm / (this.getSpeed() * counter);
             ddt = (long) (1000.0 * dt);
-            if (ddt < 30)
-                ddt = 30;
+            if (ddt < 35)
+                ddt = 35;
         }
         this.set_sg_dt(ddt);
     }

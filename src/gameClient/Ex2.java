@@ -210,7 +210,7 @@ public class Ex2 implements Runnable {
                        c.getAgent().set_SDT(dt,c.getPok());
                        dt=c.getAgent().get_sg_dt();
                        if(c.getAgent().counter>2 && dt==100){
-                           dt=30;
+                           dt=35;
                        }
                     }
                 }

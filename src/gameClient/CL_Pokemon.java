@@ -33,6 +33,12 @@ public class CL_Pokemon {
 	public void setClosePkm(){
 		this.closePkm++;
 	}
+
+	/**
+	 * initializes the pokemon from a json file
+	 * @param json
+	 * @return object of pokemon
+	 */
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
 		try {
@@ -97,7 +103,6 @@ public class CL_Pokemon {
 	public int hashCode() {
 		return Objects.hashCode(_pos);//Objects.hash(_value, _type, _pos);
 	}
-
 	public void setMin_ro(int min_ro) {
 		this.min_ro = min_ro;
 	}

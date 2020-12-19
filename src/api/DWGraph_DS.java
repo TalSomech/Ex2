@@ -3,6 +3,10 @@ package api;
 
 import java.util.*;
 
+/**
+ * this graph implements directed weighted graph
+ * it represents the graph on which the game operates on
+ */
 public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer, node_data> graph;
     private int numOfEdges, ModeCount;
@@ -13,6 +17,10 @@ public class DWGraph_DS implements directed_weighted_graph {
         ModeCount = 0;
     }
 
+    /**
+     * copy constructor
+     * @param other
+     */
     DWGraph_DS(DWGraph_DS other) {
         graph = new HashMap<>();
         for (node_data cur : other.getV()) { //adding all other's nodes to our graph
@@ -71,6 +79,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         ModeCount++;
     }
 
+    /**
+     * this function is used to connect between 2 nodes and create an edge between them ,
+     * if an edge already exists then only changes weight of the edge.
+     * @param src - the source of the edge.
+     * @param dest - the destination of the edge.
+     * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     */
     @Override
     public void connect(int src, int dest, double w) {
         if (src == dest) return;
@@ -90,13 +105,16 @@ public class DWGraph_DS implements directed_weighted_graph {
         return graph.values();
     }
 
-
     @Override
     public Collection<edge_data> getE(int node_id) {
         if (!graph.containsKey(node_id)) return null;
         return ((NodeData) graph.get(node_id)).neighbors.values();
     }
 
+    /**
+     * this function returns all the edges in the graph
+     * @return Collection of al the edges in the graph
+     */
     public Collection<edge_data> getE() {
         List<edge_data> ans= new ArrayList<>();
         for (node_data nds:this.graph.values()) {

@@ -27,6 +27,10 @@ public class gamePanel extends JPanel {
         back = new ImageIcon("./rcs/newBack.png").getImage();
     }
 
+    /**
+     * is the function that set the size of
+     * the panel and the graph size according to the given height and width (uses w2f function of the arena)
+     */
     public void updatePanel() {
         double j=((this.getHeight()*this.getWidth())/4000);
         double k=((this.getHeight()*this.getWidth())/100000);

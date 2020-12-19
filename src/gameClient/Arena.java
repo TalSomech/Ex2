@@ -56,6 +56,9 @@ public class Arena {
         this._gg = g;
     }
 
+    /**
+     * initializes the Arena
+     */
     private void init() {
         MIN = null;
         MAX = null;
@@ -120,6 +123,14 @@ public class Arena {
     }
 
     ////////////////////////////////////////////////////
+
+    /**
+     * reads agents from a Jsonfile and creates,or updates all the agents in the game
+     * as an actual agent object
+     * @param aa
+     * @param gg
+     * @return returns a list of agents which represents the game's agents current status.
+     */
     public static List<CL_Agent> updateAgents(String aa, directed_weighted_graph gg) {
         CL_Agent c;
         ArrayList<CL_Agent> ans = new ArrayList<>();
@@ -147,6 +158,11 @@ public class Arena {
         return ans;
     }
 
+    /**
+     * checks if an agent already exists in the arena so it will update it
+     * @param agent
+     * @return a pointer to said agent
+     */
     private static CL_Agent isIn_Agents (int agent){
         if(_agents ==null) return null;
         for (CL_Agent ag:_agents) {
@@ -155,6 +171,15 @@ public class Arena {
         return null;
     }
 
+    /**
+     *  function which reads the status and number of pokemons
+     *  from the server in the format of Json and turns it into actual objects of pokemons ,
+     *  the function returns a list of pokemons
+     *  which represents the current status of all the current pokemons in the game
+     *  the function only reads the pokemon and does not actually put it in the graph.
+     * @param fs
+     * @return array list of objects of pokemons
+     */
     public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {
         ArrayList<CL_Pokemon> ans = new ArrayList<>();
         try {
@@ -175,6 +200,12 @@ public class Arena {
         return ans;
     }
 
+    /**
+     * a function which is used after json2Pokemon which updates each pokemon's edge
+     * based on their geolocation in the game and puts each pokemon on the graph.
+     * @param fr
+     * @param g
+     */
     public static void updateEdge(CL_Pokemon fr, directed_weighted_graph g) {
         Iterator<node_data> itr = g.getV().iterator();
         while (itr.hasNext()) {
@@ -192,7 +223,13 @@ public class Arena {
 
     }
 
-
+    /**
+     * checks if an agent is on an edge
+     * @param p
+     * @param src
+     * @param dest
+     * @return boolean if its on an edge
+     */
     private static boolean isOnEdge(geo_location p, geo_location src, geo_location dest) {
         boolean ans = false;
         double dist = src.distance(dest);
@@ -221,36 +258,11 @@ public class Arena {
         return isOnEdge(p, src, dest, g);
     }
 
-
-//    public static void updateEdgeForAgent(CL_Agent fr, directed_weighted_graph g) {
-//        Iterator<node_data> itr = g.getV().iterator();
-//        while (itr.hasNext()) {
-//            node_data v = itr.next();
-//            Iterator<edge_data> iter = g.getE(v.getKey()).iterator();
-//            while (iter.hasNext()) {
-//                edge_data e = iter.next();
-//                geo_location src =g.getNode(e.getSrc()).getLocation();
-//                geo_location dest =g.getNode(e.getDest()).getLocation();
-//                boolean f= isAgentsOnEdge(fr.getLocation(),src,dest);
-//                if (f) {
-//                    fr.set_curr_edge(e);
-//                    return;
-//                }
-//            }
-//        }
-//    }
-
-//    private static boolean isAgentsOnEdge(geo_location p, geo_location src, geo_location dest) {
-//        boolean ans = false;
-//        double dist = src.distance(dest);
-//        double d1 = src.distance(p) + p.distance(dest);
-//        if (dist > d1 - EPS2) {
-//            ans = true;
-//        }
-//        return ans;
-//    }
-
-
+    /**
+     * this function turns the graph into a frame visualisation dimensions
+     * @param g
+     * @return Range2D object
+     */
     private static Range2D GraphRange(directed_weighted_graph g) {
         Iterator<node_data> itr = g.getV().iterator();
         double x0 = 0, x1 = 0, y0 = 0, y1 = 0;
@@ -283,6 +295,14 @@ public class Arena {
         return new Range2D(xr, yr);
     }
 
+    /**
+     * fuction to turn the graph's "world" (by Geolocation and such) to actual visualisation
+     * that can be read in the GUI.
+     * it uses GraphRange function
+     * @param g
+     * @param frame
+     * @return Range2Range object
+     */
     public static Range2Range w2f(directed_weighted_graph g, Range2D frame) {
         Range2D world = GraphRange(g);
         Range2Range ans = new Range2Range(world, frame);

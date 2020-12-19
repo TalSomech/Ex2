@@ -1,21 +1,33 @@
 package api;
 
-import java.io.*;
+import com.google.gson.*;
+import com.google.gson.stream.JsonWriter;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
-import com.google.gson.*;
-
-import com.google.gson.stream.JsonWriter;
-
-
+/**
+ * this class is used to perform different algorithms on the graph
+ * it implements dw graph algorithms
+ */
 public class DWGraph_Algo implements dw_graph_algorithms {
     DWGraph_DS graph;
 
+    /**
+     * constructor
+     * @param g
+     */
     DWGraph_Algo(DWGraph_DS g) {
         this.graph = g;
     }
 
+    /**
+     * construtor
+     */
     public DWGraph_Algo() {
         this.graph = new DWGraph_DS();
     }
@@ -38,11 +50,18 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return this.graph;
     }
 
+
     @Override
     public directed_weighted_graph copy() {
         return new DWGraph_DS(this.graph);
     }
 
+    /**
+     * Returns true if and only if (iff) there is a valid path from each node to each
+     * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
+     * this function uses the Trajan's algorithm to find SSC to check if there are more than 1
+     * @return boolean if connected
+     */
     @Override
     public boolean isConnected() {
         resetT();
@@ -59,12 +78,24 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return flag;
     }
 
+    /**
+     * this function returns all the SCC in the graph
+     * @return a list SSC of nodes
+     */
     public List<List<node_data>> getComponents (){
         Tarjan t = new Tarjan(this.graph);
         resetT();
         return t.getComponents();
     }
 
+    /**
+     * this function find the shortest distant between 2 vertices in the graph
+     * using the dijkstra's algorithm to a weighted directional graph
+     * returns -1 if there isn't a path between the 2 nodes
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return double of cost of the distant from a source node to destination
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
         if (src == dest)
@@ -79,7 +110,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return path;
     }
-
+    /**
+     * this function find the shortest path between 2 vertices in the graph
+     * using the dijkstra's algorithm to a weighted directional graph
+     * return null if there isn't a path
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return list of nodes representing the path from source node to destination
+     */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
         List<node_data> path = new LinkedList<>();
@@ -99,7 +137,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return path;
     }
-
+    /**
+     * Saves this weighted (directed) graph to the given
+     * file name - in JSON format using JsonWriter lib
+     * @param file - the file name (may include a relative path).
+     * @return true - iff the file was successfully saved
+     */
     @Override
     public boolean save(String file) {
         try {
@@ -137,7 +180,16 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return true;
     }
-
+    /**
+     * This method load a graph to this graph algorithm.
+     * if the file was successfully loaded - the underlying graph
+     * of this class will be changed (to the loaded one), in case the
+     * graph was not loaded the original graph should remain "as is".
+     * this function uses a custom graph Gson Deserialization
+     * and GsonBuilder
+     * @param file - file name of JSON file
+     * @return true - iff the graph was successfully loaded.
+     */
     @Override
     public boolean load(String file) {
         try {
@@ -153,7 +205,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
-
+    /**
+     * the algorithm finds all the connected nodes to a source node
+     * the algorithm checks weighted paths the neighboring nodes until all nodes are visited
+     * and sets every node's predecessor by the shortest path from src node to it
+     * runTime:(O(V+E))
+     * @param src node
+     * @return int
+     */
     private void dijkstra(node_data src) {
         resetD();
         src.setWeight(0);
@@ -176,6 +235,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     }
 
+    /**
+     * resets all the vertices in the graph to be able to use the dijkstra algorithm
+     */
     public void resetD() {
         for (node_data nd : graph.getV()) {
             nd.setWeight(Integer.MAX_VALUE);
@@ -183,7 +245,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             ((NodeData) nd).setVis(false);
         }
     }
-
+    /**
+     * resets all the vertices in the graph to be able to use the tarjan algorithm
+     */
     public void resetT() {
         for (node_data nd : graph.getV()) {
             nd.setTag(-1);
@@ -191,7 +255,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     }
 
-
+    /**
+     * this class implements JSON Deserializer inorder to be able to load
+     * a graph in the load function
+     */
     private class GraphJsonDesrializeltion implements JsonDeserializer<DWGraph_DS> {
         @Override
         public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
@@ -217,6 +284,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return g;
         }
     }
+
+    /**
+     * this class is used to find all the SCC in the graph and save them
+     */
     private class Tarjan {
         int time;
         DWGraph_DS g;
@@ -230,6 +301,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             components = new ArrayList<>();
         }
 
+        /**
+         * this function is the implementation of the Tarjan's algorithm to find SCC
+         * the algorithm: https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
+         *
+         * @return list of all the nodes in the graph , divided to SCC
+         */
         public List<List<node_data>> tarjan() {
             for (node_data nds : g.getV()) {
                 if (((NodeData) nds).isVis() == false)
@@ -237,6 +314,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             }
             return components;
         }
+
+        /**
+         * this is an implementation of the depth for search algorithm used in the trajan algorithm
+         * dfs: https://en.wikipedia.org/wiki/Depth-first_search
+         * @param nds - a start node to begin dfs on
+         */
         public void dfs (NodeData nds) {
             nds.setTag(time++);
             nds.setVis(true);
@@ -262,11 +345,20 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                 components.add(component);
             }
         }
+
+        /**
+         *this function checks if the graph is connected
+         * @return boolean is connected
+         */
         public boolean isConnected() {
             tarjan();
             return (this.components.size() == 1);
         }
 
+        /**
+         * this function return all the vertices in the graph divided into SCC
+         * @return list of SCC
+         */
         public List<List<node_data>> getComponents() {
             return this.components;
         }
