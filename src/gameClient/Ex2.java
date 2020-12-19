@@ -26,9 +26,7 @@ public class Ex2 implements Runnable {
             id = Integer.parseInt(args[0]);
             sen = Integer.parseInt(args[1]);
         } else {
-            //String ID = ;
-            id = popUp.getId();//Integer.parseInt(ID);
-       //     String SEN = ;
+            id = popUp.getId();
             sen = popUp.getSen();
         }
         game = Game_Server_Ex2.getServer(sen);
@@ -57,7 +55,6 @@ public class Ex2 implements Runnable {
         _win.setVisible(false);
         _score.setVisible(true);
         System.out.println(game.toString());
-        //System.exit(0);
     }
 
     public static void init(game_service game) {
@@ -71,7 +68,6 @@ public class Ex2 implements Runnable {
         _ar.setGraph(algo.getGraph());
         ArrayList<CL_Pokemon> pkms = Arena.json2Pokemons(pks);
         _ar.setPokemons(pkms);
-        //markProblematicEdges();
         _win = new MyFrame("Ex2");
         _win.setSize(1000, 700);
         try {
@@ -167,29 +163,35 @@ public class Ex2 implements Runnable {
         for (CL_Pokemon curr_pkm : curr_pkms) {
             Arena.updateEdge(curr_pkm, _ar.getGraph());
         }
-        for (CL_Agent agnt : _ar.updateAgents()) {
-            if (firsRun || agnt.getPath().isEmpty()) {
-                change = true;
-                break;
-            }
-        }
-
+        checkChange();
         if (change || firsRun) {
-            _ar.setPokemons(curr_pkms);
-            for (CL_Agent agent : _ar.updateAgents()) {
-                for (CL_Pokemon pkm : curr_pkms) {
-                    queue.add(new Container(agent, pkm, algo));
-                }
-            }
-            chooseTarget();
-            firsRun = false;
+            setWays(curr_pkms);
         }
-        for (CL_Agent agn : _ar.updateAgents()) {
+        for (CL_Agent agn : _ar.getAgents()) {
                 int dest = nextNode(agn);
                 game.chooseNextEdge(agn.getID(), dest);
                 _ar.set_info("Agent: " + agn.getID() + ", score: " + agn.getValue(), agn.getID());
 
         }
+    }
+    private static void checkChange(){
+        for (CL_Agent agnt : _ar.getAgents()) {
+            if (firsRun || agnt.getPath().isEmpty()) {
+                change = true;
+                break;
+            }
+        }
+    }
+
+    private static void setWays(List<CL_Pokemon> curr_pkms){
+        _ar.setPokemons(curr_pkms);
+        for (CL_Agent agent : _ar.getAgents()) {
+            for (CL_Pokemon pkm : curr_pkms) {
+                queue.add(new Container(agent, pkm, algo));
+            }
+        }
+        chooseTarget();
+        firsRun = false;
     }
 
     private static void chooseTarget() {
@@ -205,9 +207,6 @@ public class Ex2 implements Runnable {
                        if(c.getAgent().counter>2 && dt==100){
                            dt=30;
                        }
-                        System.out.println(dt+" dt");
-                        System.out.println(c.getAgent().counter);
-                        //dt=35;
                     }
                 }
                 if(c.getAgent().getLastEaten()!=null) {
@@ -222,8 +221,6 @@ public class Ex2 implements Runnable {
             queue.poll();
         }
     }
-
-
     private static int nextNode(CL_Agent agent) {
         int ans;
         if (agent.getPath().isEmpty()) {

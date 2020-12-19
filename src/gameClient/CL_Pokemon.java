@@ -3,9 +3,6 @@ import api.edge_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
 public class CL_Pokemon {
@@ -20,7 +17,6 @@ public class CL_Pokemon {
 	private int closePkm;
 	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e) {
 		_type = t;
-	//	_speed = s;
 		_value = v;
 		set_edge(e);
 		_pos = p;
@@ -83,10 +79,6 @@ public class CL_Pokemon {
 		this.nxtEater = nxtEater;
 	}
 
-	public int getMin_ro() {
-		return min_ro;
-	}
-
 	public CL_Pokemon getClspkm() {
 		return clspkm;
 	}
@@ -94,16 +86,6 @@ public class CL_Pokemon {
 	public void setClspkm(CL_Pokemon clspkm) {
 		this.clspkm = clspkm;
 	}
-
-//	@Override
-//	public boolean equals(Object o) {
-//		if (this == o) return true;
-//		if (o == null || getClass() != o.getClass()) return false;
-//		CL_Pokemon that = (CL_Pokemon) o;
-//		return Double.compare(that._value, _value) == 0 &&
-//				_type == that._type &&
-//				Objects.equals(_pos, that._pos);
-//	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

@@ -44,7 +44,7 @@ public class CL_Agent {
     }
 
     public CL_Agent(directed_weighted_graph g, int start_node) {
-        counter=1;
+        counter = 1;
         _gg = g;
         setMoney(0);
         this._curr_node = _gg.getNode(start_node);
@@ -87,7 +87,7 @@ public class CL_Agent {
 
     public String toJSON() {
         int d = this.getNextNode();
-        String ans = "{\"Agent\":{"
+        return "{\"Agent\":{"
                 + "\"id\":" + this._id + ","
                 + "\"value\":" + this._value + ","
                 + "\"src\":" + this._curr_node.getKey() + ","
@@ -96,7 +96,6 @@ public class CL_Agent {
                 + "\"pos\":\"" + _pos.toString() + "\""
                 + "}"
                 + "}";
-        return ans;
     }
 
     private void setMoney(double v) {
@@ -110,7 +109,6 @@ public class CL_Agent {
         if (_curr_edge != null) {
             ans = true;
         }
-        //else {_curr_edge = null;}
         return ans;
     }
 
@@ -125,12 +123,6 @@ public class CL_Agent {
     public String toString() {
         return toJSON();
     }
-
-    public String toString1() {
-        String ans = "" + this.getID() + "," + _pos + ", " + isMoving() + "," + this.getValue();
-        return ans;
-    }
-
     public int getID() {
 
         return this._id;
@@ -145,7 +137,7 @@ public class CL_Agent {
     }
 
     public int getNextNode() {
-        int ans = -2;
+        int ans;
         if (this._curr_edge == null) {
             ans = -1;
         } else {
@@ -174,7 +166,7 @@ public class CL_Agent {
         this._curr_edge = _curr_edge;
     }
 
-    public void set_SDT(long ddtt,CL_Pokemon k) {
+    public void set_SDT(long ddtt, CL_Pokemon k) {
         long ddt = ddtt;
         if (this._curr_edge != null) {
             double w = get_curr_edge().getWeight();
@@ -186,10 +178,10 @@ public class CL_Agent {
                 dist = k.getLocation().distance(this._pos);
             }
             double norm = dist / de;
-            double dt = w * norm/ (this.getSpeed()*counter);
+            double dt = w * norm / (this.getSpeed() * counter);
             ddt = (long) (1000.0 * dt);
-            if(ddt<30)
-                ddt=30;
+            if (ddt < 30)
+                ddt = 30;
         }
         this.set_sg_dt(ddt);
     }

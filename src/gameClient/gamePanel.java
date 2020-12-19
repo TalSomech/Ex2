@@ -12,7 +12,7 @@ import java.util.List;
 
 public class gamePanel extends JPanel {
     private Graphics2D g2D;
-    private Image agent, pikachu, mew, back, label;
+    private Image agent, pikachu, mew, back;
     private Arena _ar;
     directed_weighted_graph gr;
     private gameClient.util.Range2Range _w2f;
@@ -25,7 +25,6 @@ public class gamePanel extends JPanel {
         pikachu = new ImageIcon("./rcs/picka.png").getImage();
         mew = new ImageIcon("./rcs/chi.png").getImage();
         back = new ImageIcon("./rcs/newBack.png").getImage();
-        label= new ImageIcon("./rcs/j1.png").getImage();
     }
 
     public void updatePanel() {
@@ -120,8 +119,7 @@ public class gamePanel extends JPanel {
 
     private void drawAgants(Graphics g) {
         g2D = (Graphics2D) g;
-        List<CL_Agent> rs = _ar.updateAgents();
-        g.setColor(Color.red);
+        List<CL_Agent> rs = _ar.getAgents();
         int i = 0;
         while (rs != null && i < rs.size()) {
             geo_location c = rs.get(i).getLocation();
