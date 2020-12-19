@@ -29,11 +29,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(graph);
-    }
-
-    @Override
     public void init(directed_weighted_graph g) {
         graph = (DWGraph_DS) g;
     }
