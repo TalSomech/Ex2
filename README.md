@@ -24,10 +24,6 @@ LIKE THIS:
 
 Another way to do it is to type you ID in the command line.
 
-LIKE THIS:
-
-**להשלים**
-
 
 2. **STEP TWO**
 
@@ -37,14 +33,16 @@ LIKE THIS:
 
 ![senScreen](https://user-images.githubusercontent.com/69470263/102688214-de79fd00-41fd-11eb-8510-7c537eac8d1a.png)
 
+3. **STEP THREE**
 
-Another way to do it is to type the scenario number in the command line.
+Another way to do it is directly from the command line.
 
 LIKE THIS:
 
-**להשלים**
+![command](https://user-images.githubusercontent.com/69470263/102692690-abdffc80-421d-11eb-9738-817fc6903e22.png)
 
-3. **STEP THREE**
+
+4. **STEP FOUR**
 
 A screen will open and the fun will begin!
 
@@ -53,14 +51,14 @@ LIKE THIS:
 ![gameScreen](https://user-images.githubusercontent.com/69470263/102616572-6dc0db00-4140-11eb-9a5f-38290eb7dc0d.png)
 
 
-4. **STEP FOUR**
+5. **STEP FIVE**
 
 You will be able to check out the time remaining and the pokeballs' scores here:
 
 ![timeNscores](https://user-images.githubusercontent.com/69470263/102636774-bd61cf80-415d-11eb-8007-caa48d1edc8e.png)
 
 
-5. **STEP FIVE**
+6. **STEP SIX**
 
 Your score will pop up in the end
 
@@ -68,7 +66,7 @@ LIKE THIS:
 
 ![scoreScreen](https://user-images.githubusercontent.com/69470263/102692308-2a876a80-421b-11eb-9ada-d28764a49c99.png)
 
-6. **STEP SIX**
+7. **STEP SEVEN**
 
 To exit simpley click the X button.
 
