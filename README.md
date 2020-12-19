@@ -85,6 +85,7 @@ You can catch up our latest work in the links below:
 [Tal's github](https://github.com/TalSomech)
 
 > For more information
+
 [The Pokemon Game Wiki](https://github.com/neta-r/Ex2.wiki.git)
 
 # THANK YOU! COME AGAIN!
