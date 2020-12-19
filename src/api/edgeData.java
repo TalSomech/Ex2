@@ -5,7 +5,6 @@ import java.util.Objects;
 
 public class edgeData implements edge_data, Serializable {
     private int src, dest;
-    private boolean isShort;
     private transient int tag;
     private double w;
     private transient String info;
@@ -16,7 +15,6 @@ public class edgeData implements edge_data, Serializable {
         this.w = w;
         this.tag = 0;
         this.info = "";
-        this.isShort = false;
     }
 
     @Override
@@ -66,14 +64,6 @@ public class edgeData implements edge_data, Serializable {
     @Override
     public int getTag() {
         return this.tag;
-    }
-
-    public boolean getIsShort() {
-        return isShort;
-    }
-
-    public void setShort(boolean aShort) {
-        isShort = aShort;
     }
 
     @Override

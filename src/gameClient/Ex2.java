@@ -79,7 +79,7 @@ public class Ex2 implements Runnable {
         _ar.setGraph(algo.getGraph());
         ArrayList<CL_Pokemon> pkms = Arena.json2Pokemons(pks);
         _ar.setPokemons(pkms);
-        markProblematicEdges();
+        //markProblematicEdges();
         _win = new MyFrame("Ex2");
         _win.setSize(1000, 700);
         try {
@@ -102,17 +102,17 @@ public class Ex2 implements Runnable {
             e.printStackTrace();
         }
     }
-
-    private static void markProblematicEdges() {
-        for (edge_data ed : ((DWGraph_DS) algo.getGraph()).getE()) {
-            geo_location src = algo.getGraph().getNode(ed.getSrc()).getLocation();
-            geo_location dest = algo.getGraph().getNode(ed.getDest()).getLocation();
-            double dist = src.distance(dest); //TODO:change to shortest path!!!!
-            if (dist < (0.001) / 2) {
-                ((edgeData) ed).setShort(true);
-            }
-        }
-    }
+//
+//    private static void markProblematicEdges() {
+//        for (edge_data ed : ((DWGraph_DS) algo.getGraph()).getE()) {
+//            geo_location src = algo.getGraph().getNode(ed.getSrc()).getLocation();
+//            geo_location dest = algo.getGraph().getNode(ed.getDest()).getLocation();
+//            double dist = src.distance(dest); //TODO:change to shortest path!!!!
+//            if (dist < (0.001) / 2) {
+//                ((edgeData) ed).setShort(true);
+//            }
+//        }
+//    }
 
     public static void markClosePkms(List<CL_Pokemon> pkm) {
         for (CL_Pokemon curpk : pkm) {
