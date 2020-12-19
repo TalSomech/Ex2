@@ -66,7 +66,7 @@ Your score will pop up in the end
 
 LIKE THIS:
 
-![scoreScreen](https://user-images.githubusercontent.com/69470263/102616598-79140680-4140-11eb-899a-df70fce7e403.png)
+![scoreScreen](https://user-images.githubusercontent.com/69470263/102692308-2a876a80-421b-11eb-9ada-d28764a49c99.png)
 
 6. **STEP SIX**
 
