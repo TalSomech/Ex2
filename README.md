@@ -86,6 +86,6 @@ You can catch up our latest work in the links below:
 
 > For more information
 
-[The Pokemon Game Wiki](https://github.com/neta-r/Ex2.wiki.git)
+[The Pokemon Game Wiki](Home)
 
 # THANK YOU! COME AGAIN!
