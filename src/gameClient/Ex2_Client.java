@@ -32,7 +32,7 @@ public class Ex2_Client implements Runnable{
 		init(game);
 		game.startGame();
 		_win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
-		List<CL_Agent> agn=_ar.getAgents();
+		List<CL_Agent> agn=_ar.updateAgents();
 		int ind=0;
 		long dt=100;
 
@@ -62,7 +62,7 @@ public class Ex2_Client implements Runnable{
 	 */
 	private static void moveAgants(game_service game, directed_weighted_graph gg) {
 		String lg = game.move();
-		List<CL_Agent> log = Arena.getAgents(lg, gg);
+		List<CL_Agent> log = Arena.updateAgents(lg, gg);
 		_ar.setAgents(log);
 		String fs = game.getPokemons();
 		List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);

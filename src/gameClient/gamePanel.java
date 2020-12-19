@@ -120,7 +120,7 @@ public class gamePanel extends JPanel {
 
     private void drawAgants(Graphics g) {
         g2D = (Graphics2D) g;
-        List<CL_Agent> rs = _ar.getAgents();
+        List<CL_Agent> rs = _ar.updateAgents();
         g.setColor(Color.red);
         int i = 0;
         while (rs != null && i < rs.size()) {

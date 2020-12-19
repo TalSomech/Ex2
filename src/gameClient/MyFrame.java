@@ -1,11 +1,7 @@
 package gameClient;
 
-import gameClient.util.dataPanel;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * This class represents a very simple GUI class to present a
@@ -14,9 +10,9 @@ import java.awt.event.ActionListener;
  * code and not to take it "as is".
  */
 public class MyFrame extends JFrame {
-    MenuItem login;
-    MenuItem load;
-    private int _ind;
+//    MenuItem login;
+//    MenuItem load;
+//    private int _ind;
     private Arena _ar;
     gamePanel gP;
 

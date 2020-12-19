@@ -13,7 +13,6 @@ public class CL_Agent {
 		private static int _count = 0;
 		private static int _seed = 3331;
 		private int _id;
-	//	private long _key;
 		private geo_location _pos;
 		private double _speed;
 		private edge_data _curr_edge;
@@ -28,10 +27,6 @@ public class CL_Agent {
 	public List<node_data> getPath() {
 		return path;
 	}
-
-//	public void set_curr_edge(int src){
-//		this._curr_edge=src;
-//	}
 
 	public String getLastEaten() {
 		return lastEaten;
@@ -60,7 +55,6 @@ public class CL_Agent {
 		public void update(String json) {
 			JSONObject line;
 			try {
-				// "GameServer":{"graph":"A0","pokemons":3,"agents":1}}
 				line = new JSONObject(json);
 				JSONObject ttt = line.getJSONObject("Agent");
 				int id = ttt.getInt("id");

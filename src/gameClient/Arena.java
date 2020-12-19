@@ -33,7 +33,7 @@ public class Arena {
 
     public Arena() {
 
-        _info = new ArrayList<String>(4);
+        _info = new ArrayList<>(4);
         _info.add(" ");
         time = "";
     }
@@ -88,7 +88,7 @@ public class Arena {
         MAX = new Point3D(x1 + dx / 10, y1 + dy / 10);
     }
 
-    public List<CL_Agent> getAgents() {
+    public List<CL_Agent> updateAgents() {
         return _agents;
     }
 
@@ -120,14 +120,14 @@ public class Arena {
     }
 
     ////////////////////////////////////////////////////
-    public static List<CL_Agent> getAgents(String aa, directed_weighted_graph gg) {
-        CL_Agent c;boolean flag;
-        ArrayList<CL_Agent> ans = new ArrayList<CL_Agent>();
+    public static List<CL_Agent> updateAgents(String aa, directed_weighted_graph gg) {
+        CL_Agent c;
+        ArrayList<CL_Agent> ans = new ArrayList<>();
         try {
             JSONObject ttt = new JSONObject(aa);
             JSONArray ags = ttt.getJSONArray("Agents");
             for (int i = 0; i < ags.length(); i++) {
-                JsonObject trainer = (JsonObject) JsonParser.parseString(ags.get(i).toString()).getAsJsonObject();
+                JsonObject trainer = JsonParser.parseString(ags.get(i).toString()).getAsJsonObject();
                 int id = trainer.get("Agent").getAsJsonObject().get("id").getAsInt();
                 CL_Agent is = isIn_Agents(id);
                 if(is==null){
@@ -135,15 +135,12 @@ public class Arena {
                 }
                 else{
                     c=is;
-                   // c.setLastEaten(is.getLastEaten());
                    c.set_curr_fruit(null);
                    c.setPath(new LinkedList<>(),null);
                 }
                 c.update(ags.get(i).toString());
-                //c.set_curr_fruit();
                 ans.add(c);
             }
-            //= getJSONArray("Agents");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -159,8 +156,7 @@ public class Arena {
     }
 
     public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {
-       // CL_Pokemon f;
-        ArrayList<CL_Pokemon> ans = new ArrayList<CL_Pokemon>();
+        ArrayList<CL_Pokemon> ans = new ArrayList<>();
         try {
             JSONObject ttt = new JSONObject(fs);
             JSONArray ags = ttt.getJSONArray("Pokemons");
@@ -169,15 +165,8 @@ public class Arena {
                 JSONObject pk = pp.getJSONObject("Pokemon");
                 int t = pk.getInt("type");
                 double v = pk.getDouble("value");
-                //double s = 0;//pk.getDouble("speed");
                 String p = pk.getString("pos");
-               // if(!_pokemons.contains(p)) {
                     CL_Pokemon f = new CL_Pokemon(new Point3D(p), t, v, 0, null);
-                 //   pkms.put()
-              //  }
-               // else{
-                //    f=_pokemons.get()
-                //}
                 ans.add(f);
             }
         } catch (JSONException e) {
@@ -187,7 +176,6 @@ public class Arena {
     }
 
     public static void updateEdge(CL_Pokemon fr, directed_weighted_graph g) {
-        //	oop_edge_data ans = null;
         Iterator<node_data> itr = g.getV().iterator();
         while (itr.hasNext()) {
             node_data v = itr.next();
@@ -206,7 +194,6 @@ public class Arena {
 
 
     private static boolean isOnEdge(geo_location p, geo_location src, geo_location dest) {
-
         boolean ans = false;
         double dist = src.distance(dest);
         double d1 = src.distance(p) + p.distance(dest);
@@ -235,33 +222,33 @@ public class Arena {
     }
 
 
-    public static void updateEdgeForAgent(CL_Agent fr, directed_weighted_graph g) {
-        Iterator<node_data> itr = g.getV().iterator();
-        while (itr.hasNext()) {
-            node_data v = itr.next();
-            Iterator<edge_data> iter = g.getE(v.getKey()).iterator();
-            while (iter.hasNext()) {
-                edge_data e = iter.next();
-                geo_location src =g.getNode(e.getSrc()).getLocation();
-                geo_location dest =g.getNode(e.getDest()).getLocation();
-                boolean f= isAgentsOnEdge(fr.getLocation(),src,dest);
-                if (f==true) {
-                    fr.set_curr_edge(e);
-                    return;
-                }
-            }
-        }
-    }
+//    public static void updateEdgeForAgent(CL_Agent fr, directed_weighted_graph g) {
+//        Iterator<node_data> itr = g.getV().iterator();
+//        while (itr.hasNext()) {
+//            node_data v = itr.next();
+//            Iterator<edge_data> iter = g.getE(v.getKey()).iterator();
+//            while (iter.hasNext()) {
+//                edge_data e = iter.next();
+//                geo_location src =g.getNode(e.getSrc()).getLocation();
+//                geo_location dest =g.getNode(e.getDest()).getLocation();
+//                boolean f= isAgentsOnEdge(fr.getLocation(),src,dest);
+//                if (f) {
+//                    fr.set_curr_edge(e);
+//                    return;
+//                }
+//            }
+//        }
+//    }
 
-    private static boolean isAgentsOnEdge(geo_location p, geo_location src, geo_location dest) {
-        boolean ans = false;
-        double dist = src.distance(dest);
-        double d1 = src.distance(p) + p.distance(dest);
-        if (dist > d1 - EPS2) {
-            ans = true;
-        }
-        return ans;
-    }
+//    private static boolean isAgentsOnEdge(geo_location p, geo_location src, geo_location dest) {
+//        boolean ans = false;
+//        double dist = src.distance(dest);
+//        double d1 = src.distance(p) + p.distance(dest);
+//        if (dist > d1 - EPS2) {
+//            ans = true;
+//        }
+//        return ans;
+//    }
 
 
     private static Range2D GraphRange(directed_weighted_graph g) {

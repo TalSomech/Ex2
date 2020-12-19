@@ -1,7 +1,5 @@
 package gameClient;
-import javax.swing.JOptionPane;
 import javax.swing.*;
-import java.awt.*;
 
 public class popUp {
     public static String getId (){
@@ -13,7 +11,7 @@ public class popUp {
                 JOptionPane.QUESTION_MESSAGE,
                 pikachu,
                 null,
-                207603978
+                0
         );
         return id;
     }
