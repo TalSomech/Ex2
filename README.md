@@ -74,7 +74,7 @@ To exit simpley click the X button.
 
 > About us
 
-We are Neta Roth and Tal Somech, sencond year student in the Ariel University.
+We are Neta Roth and Tal Somech, second year students in the Ariel University.
 
 You can catch up our latest work in the links below:
 
