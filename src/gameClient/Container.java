@@ -2,7 +2,9 @@ package gameClient;
 
 import api.dw_graph_algorithms;
 
-
+/**
+ * this class represents an object containing a pokemon,agent and the distant of the agent from the pokemon
+ */
 public class Container implements  Comparable<Container>{
     private CL_Pokemon pok;
     private CL_Agent agent;

@@ -9,6 +9,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * this class represent the Game manager of the game , this is the main class of the game
+ */
 public class Ex2 implements Runnable {
     private static MyFrame _win;
     private static Arena _ar;

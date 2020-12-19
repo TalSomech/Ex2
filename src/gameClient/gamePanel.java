@@ -10,6 +10,9 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * this class represents the panel of the game which is built on the frame
+ */
 public class gamePanel extends JPanel {
     private Graphics2D g2D;
     private Image agent, pikachu, mew, back;

@@ -7,6 +7,9 @@ import org.json.JSONObject;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * this class represent the window of the score at the end of the game
+ */
 public class scores extends JFrame{
     private Image back;
     private Graphics2D g2D;

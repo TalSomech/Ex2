@@ -1,6 +1,10 @@
 package gameClient;
 import javax.swing.*;
 
+/**
+ * this class represents the pop up windows at the start of the game
+ * which asks the user for id and scenrio number
+ */
 public class popUp {
     /**
      * the function creates the first pop up window of the id request.

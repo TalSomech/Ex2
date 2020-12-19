@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ *  this class represent an instance of a single agent inside the game
+ */
 public class CL_Agent {
     public static final double EPS = 0.0001;
     private static int _count = 0;

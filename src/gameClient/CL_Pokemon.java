@@ -5,6 +5,9 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
+/**
+ * this class represent an instance of a single pokemon inside the game
+ */
 public class CL_Pokemon {
 	private edge_data _edge;
 	private double _value;
