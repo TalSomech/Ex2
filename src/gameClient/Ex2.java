@@ -26,10 +26,10 @@ public class Ex2 implements Runnable {
             id = Integer.parseInt(args[0]);
             sen = Integer.parseInt(args[1]);
         } else {
-            String ID = popUp.getId();
-            id = Integer.parseInt(ID);
-            String SEN = popUp.getSen();
-            sen = Integer.parseInt(SEN);
+            //String ID = ;
+            id = popUp.getId();//Integer.parseInt(ID);
+       //     String SEN = ;
+            sen = popUp.getSen();
         }
         game = Game_Server_Ex2.getServer(sen);
         init(game);
@@ -45,7 +45,7 @@ public class Ex2 implements Runnable {
         while (game.isRunning()) {
             //while (keepTheFuckRunning) {
             try {
-                dt = 110;
+                dt = 100;
                 moveAgents();
 
                 _win.repaint();
@@ -203,8 +203,20 @@ public class Ex2 implements Runnable {
                 if (c.getAgent().getLastEaten() != null) {
                     if(c.getAgent().getPath().size()==1)
                     if (c.getAgent().getLastEaten().equals(c.getPok().getLocation().toString())&&c.getAgent().getSpeed()>=5) {
-                        dt = 35;
+                        c.getAgent().counter++;
+                       c.getAgent().set_SDT(dt,c.getPok());
+                       dt=c.getAgent().get_sg_dt();
+                       if(c.getAgent().counter>2 && dt==100){
+                           dt=30;
+                       }
+                        System.out.println(dt+" dt");
+                        System.out.println(c.getAgent().counter);
+                        //dt=35;
                     }
+                }
+                if(c.getAgent().getLastEaten()!=null) {
+                    if (!c.getAgent().getLastEaten().equals(c.getPok().getLocation().toString()))
+                        c.getAgent().counter = 1;
                 }
                 c.getAgent().set_curr_fruit(c.getPok());
                 c.getPok().setNxtEater(c.getAgent());

@@ -2,31 +2,68 @@ package gameClient;
 import javax.swing.*;
 
 public class popUp {
-    public static String getId (){
-        ImageIcon pikachu = new ImageIcon("./rcs/popup.png");
-        String id=  (String) JOptionPane.showInputDialog(
-                null,
-                "Please enter ID: ",
-                "ID",
-                JOptionPane.QUESTION_MESSAGE,
-                pikachu,
-                null,
-                0
-        );
-        return id;
+    public static int getId (){
+        boolean flag =false;
+        String id;
+        int ID=0;
+        while(!flag) {
+            ImageIcon pikachu = new ImageIcon("./rcs/popup.png");
+            id = (String) JOptionPane.showInputDialog(
+                    null,
+                    "Please enter ID: ",
+                    "ID",
+                    JOptionPane.QUESTION_MESSAGE,
+                    pikachu,
+                    null,
+                    0
+            );
+            if(id==null){
+                System.exit(0);
+            }
+            try {
+                 ID = Integer.parseInt(id);
+                flag=true;
+            } catch (NumberFormatException e) {
+                invalid();
+            }
+            catch (Exception E){
+                flag=true;
+            }
+        }
+        return ID;
     }
-    public static String getSen (){
-        ImageIcon pikachu = new ImageIcon("./rcs/popup2.png");
-        String[] options ={"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"};
-        String sen= (String) JOptionPane.showInputDialog(
-                null,
-                "Please enter level: ",
-                "level",
-                JOptionPane.QUESTION_MESSAGE,
-                pikachu,
-                options,
-                options[0]
-        );
-        return sen;
+    public static int getSen () {
+        boolean flag = false;
+        String sen;
+        int SEN = 0;
+        ImageIcon ball=new ImageIcon("./rcs/popup2.png");
+        while (!flag) {
+            // ball = new ImageIcon("./rcs/popup2.png");
+            sen = (String) JOptionPane.showInputDialog(
+                    null,
+                    "Please enter level: ",
+                    "level",
+                    JOptionPane.QUESTION_MESSAGE,
+                    ball,
+                    null,
+                    0
+            );
+            if (sen == null) {
+                System.exit(0);
+            }
+            try {
+                SEN = Integer.parseInt(sen);
+                flag = true;
+            } catch (NumberFormatException e) {
+                invalid();
+            } catch (Exception E) {
+                flag = true;
+            }
+        }
+        return SEN;
+    }
+    public static void invalid (){
+        JOptionPane.showMessageDialog(null,    "You're choice is invalid! ",
+                "Invalid",JOptionPane.WARNING_MESSAGE);
     }
 }
