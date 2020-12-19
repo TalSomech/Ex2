@@ -2,6 +2,12 @@ package gameClient;
 import javax.swing.*;
 
 public class popUp {
+    /**
+     * the function creates the first pop up window of the id request.
+     * It creats a JOptionPane as the pop up that returns a String that then
+     * will be cast to an integer and returned in the end. Also check if the input is valid- if not send an error.
+     * @return
+     */
     public static int getId (){
         boolean flag =false;
         String id;
@@ -32,6 +38,14 @@ public class popUp {
         }
         return ID;
     }
+
+    /**
+     *  the function creates the second pop up window of the scenario request.
+     *  It creates a JOptionPane as the pop up that returns a String
+     *  that then will be cast to an integer and returned in the end.
+     *  Also check if the input is valid- if not send an error.
+     * @return
+     */
     public static int getSen () {
         boolean flag = false;
         String sen;

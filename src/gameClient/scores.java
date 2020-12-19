@@ -13,6 +13,7 @@ public class scores extends JFrame{
     private int grade;
     private int moves;
     public static game_service game;
+
     scores( game_service game) {
         super();
         this.game=game;
@@ -20,7 +21,10 @@ public class scores extends JFrame{
         back= new ImageIcon("./rcs/scoreBack.png").getImage();
         repaint();
     }
-
+    /**
+     * function that extract the grade and moves that needs to be print from the game.toString.
+     * It uses the JSONObject function.
+     */
     public void getGrade (){
          grade=0;
          moves=0;
@@ -34,6 +38,12 @@ public class scores extends JFrame{
         }
     }
 
+    /**
+     * the function paint the frame.
+     * It is painting the background image and the caption (the grade).
+     * It is using the function "drawCenteredString".
+     * @param g
+     */
     public void paint(Graphics g) {
         g2D = (Graphics2D) g;
         int w = this.getWidth();
@@ -48,6 +58,14 @@ public class scores extends JFrame{
         drawCenteredString(k, this.getWidth(), this.getHeight()+40, g);
 
     }
+
+    /**
+     * the function sets the caption in the middle of the frame and draws it.
+     * @param s
+     * @param w
+     * @param h
+     * @param g
+     */
     public void drawCenteredString(String s, int w, int h, Graphics g) {
         FontMetrics fm = g.getFontMetrics();
         int x = (w - fm.stringWidth(s)) / 2;

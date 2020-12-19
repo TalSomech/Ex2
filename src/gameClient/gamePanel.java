@@ -73,8 +73,8 @@ public class gamePanel extends JPanel {
     }
 
     /**
-     *  is the function that draws the graph,
-     *  it goes over g's vertices and edges and calles drawNode and drawEdge functions when needed.
+     *  the function draws the graph,
+     *  it goes over g's vertices and edges and calls drawNode and drawEdge functions when needed.
      * @param g
      */
     public void drawGraph(Graphics g) {
@@ -92,6 +92,12 @@ public class gamePanel extends JPanel {
         }
     }
 
+    /**
+     *the function  draws the agents' scores and the time left. It loop over the agents in
+     * the arena and uses the value field and the time fields in ar.
+     * Also it draws using the JPanel's function drawString.
+     * @param g
+     */
     private void drawInfo(Graphics g) {
         List<String> str = _ar.get_info();
         Graphics2D g2D = (Graphics2D) g;
@@ -109,6 +115,13 @@ public class gamePanel extends JPanel {
         }
     }
 
+    /**
+     * function draws the edges- It recives an edge and according to it's source and destination
+     * geoLocation it draw a line using the JPanel function drawLine.
+     * @param e
+     * @param g
+     * @param gr
+     */
     public void drawEdge(edge_data e, Graphics g, directed_weighted_graph gr) {
         geo_location src = gr.getNode(e.getSrc()).getLocation();
         geo_location dest = gr.getNode(e.getDest()).getLocation();
@@ -117,6 +130,12 @@ public class gamePanel extends JPanel {
         g.drawLine((int) s0.x(), (int) s0.y(), (int) d0.x(), (int) d0.y());
     }
 
+    /**
+     * this function draws the pokemons. It loop over the ar's
+     * pokemons and adjust them to the size of the panel using the world2frame function of the arena.
+     * It checks the type of the pokemon and according to it it draw pikachu or chikorita image.
+     * @param g
+     */
     private void drawPokemons(Graphics g) {
         g2D = (Graphics2D) g;
         List<CL_Pokemon> fs = _ar.getPokemons();
@@ -138,6 +157,11 @@ public class gamePanel extends JPanel {
         }
     }
 
+    /**
+     *  the function draws the pokeballs. It loop over the ar's agents and adjust them to the
+     *  size of the panel using the world2frame function of the arena. It draws the pokeball image.
+     * @param g
+     */
     private void drawAgants(Graphics g) {
         g2D = (Graphics2D) g;
         List<CL_Agent> rs = _ar.getAgents();

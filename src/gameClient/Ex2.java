@@ -40,6 +40,10 @@ public class Ex2 implements Runnable {
         client.start();
     }
 
+    /**
+     * while the game is still running calls moveAgents function and repaint the win.
+     * After the game ends calls creat a score to show the score of the game.
+     */
     @Override
     public void run() {
         game.startGame();
@@ -62,6 +66,15 @@ public class Ex2 implements Runnable {
         System.out.println(game.toString());
     }
 
+    /**
+     * function first initializing all of the variables. To initialize the graph uses the function
+     * "saveAsString" and the algo's function "load".
+     * Also the function is "breaking" the game.toString to information in order to know number of agents to locate.
+     * Afterwards it is giving every pokemon the edge it is on using the "updateEdge" function.
+     * In order to locate the agents smartly the function is marking groups of close pokemons and locate the agents
+     * close to them using the functions "markClosePkms" and "locateAgents".
+     * @param game
+     */
     public static void init(game_service game) {
         firsRun = true;
         String pks = game.getPokemons();
@@ -96,6 +109,13 @@ public class Ex2 implements Runnable {
         }
     }
 
+    /**
+     *  going over all of the pokemons in the graph and each's neighbors and marks
+     *  the distance between them using algo's shortestPath function.
+     *  If the distance is bigger then edges the pokemons are not close to each other.
+     * @param pkm
+     */
+
     public static void markClosePkms(List<CL_Pokemon> pkm) {
         for (CL_Pokemon curpk : pkm) {
             for (CL_Pokemon othpkm : pkm) {
@@ -113,6 +133,20 @@ public class Ex2 implements Runnable {
         }
     }
 
+    /**
+     *  is divided to a case where the graph is connected and to a case it's not.
+     *  To determine that the function is using algo's "isConnected" function.
+     *  1.If the graph is connected the function is creating a priority queue of pokemons
+     *  (the comperation is based on the number of close pokemons)
+     *  then simply locating the agents to the first pokemon in the queue and poll it and then to the second etc..
+     *  2.If the graph is not connected the function is creating a list of components using algo's
+     *  "getComponents" function. then simply locate agent in each component.
+     *  If there are agents left to locate the function is locating them in
+     *  the component with the maximun number of vertices
+     *  (beacuse there a bigger chance a pokemon will appear there).
+     * @param numOfAg
+     * @param pkms
+     */
     private static void locateAgents(int numOfAg, List<CL_Pokemon> pkms) {
         if (algo.isConnected()) {
             PriorityQueue<CL_Pokemon> q = new PriorityQueue<>((o1, o2) -> o2.getClosePkm() - o1.getClosePkm());
@@ -146,6 +180,11 @@ public class Ex2 implements Runnable {
 
     }
 
+    /**
+     *function is simply saves the given Json graph as a String using the "FileWriter" library.
+     * @param jsonG
+     * @return
+     */
     private static String saveAsString(String jsonG) {
         try {
             FileWriter r = new FileWriter("graph.json");
@@ -158,7 +197,15 @@ public class Ex2 implements Runnable {
         return "graph.json";
     }
 
-
+    /**
+     * is the main function of the game. First it is communicating with the server in order
+     * to get the most update information about the agents and the pokemons.
+     * It sets the data in the ar then check if the new information is any different then the old one using
+     * the "checkChange" function. If there was a change or it is the first run the function determines
+     * the targets to all the agents using the "setWays" function.
+     * Afterwards it chooses the next edge for each agent using the "chooseNextEdge" function.
+     *
+     */
     public static void moveAgents() {
         String lg = game.move();
         List<CL_Agent> balls = Arena.updateAgents(lg, _ar.getGraph());
@@ -179,6 +226,12 @@ public class Ex2 implements Runnable {
 
         }
     }
+
+    /**
+     * function is going over all of the agents' paths in the arena and checking if even one of them
+     * has finished the path.
+     * Returns true of that is the case.
+     */
     private static void checkChange(){
         for (CL_Agent agnt : _ar.getAgents()) {
             if (firsRun || agnt.getPath().isEmpty()) {
@@ -188,6 +241,12 @@ public class Ex2 implements Runnable {
         }
     }
 
+    /**
+     *  function is going over all of the agents and the pokemons and the arena and adding each combinaion of
+     *  them as a Container object.
+     *  Then calls the function of "chooseTarget" and finally sets firstRun to false.
+     * @param curr_pkms
+     */
     private static void setWays(List<CL_Pokemon> curr_pkms){
         _ar.setPokemons(curr_pkms);
         for (CL_Agent agent : _ar.getAgents()) {
@@ -199,6 +258,16 @@ public class Ex2 implements Runnable {
         firsRun = false;
     }
 
+    /**
+     * is the function that determines the next target to each agent.
+     * The function is going over the queue of Containers and askes if in this certain combination of agent
+     * and pokemon the agent has no target and the pokemon has no agent to eat it.
+     * If this is the case this pkemon will be eaten by this agents.
+     * reminder: the queue is order by the distance between the pokemon and the agent to get the best match
+     * to each agent. The function also check the distance to the pokemon and the speed of the agent and if
+     * needed lower the dt so the agent won't miss the pokemon because of it's speed using the "set_SDT" function
+     * on Agent's class.
+     */
     private static void chooseTarget() {
         while (!queue.isEmpty()) {
             Container c = queue.iterator().next();
@@ -226,6 +295,14 @@ public class Ex2 implements Runnable {
             queue.poll();
         }
     }
+
+    /**
+     * the function that determines the next edge to go to in the agent's path. It is taking the list of edges
+     * the agent has to go over in order to get to the pokemon and tell him which is next. It sets the agent's
+     * path to the new path.
+     * @param agent
+     * @return
+     */
     private static int nextNode(CL_Agent agent) {
         int ans;
         if (agent.getPath().isEmpty()) {
