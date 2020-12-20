@@ -39,8 +39,6 @@ class Game_test {
         initGame();
 
     }
-
-
     void chooseTarget() {
         avi = _ar.getAgents().get(1);
         beni = _ar.getAgents().get(0);
@@ -53,7 +51,6 @@ class Game_test {
             fail();
         }
     }
-
     void nextNode() {
         int aviWay = Ex2.nextNode(avi);
         int beniWay = Ex2.nextNode(beni);
