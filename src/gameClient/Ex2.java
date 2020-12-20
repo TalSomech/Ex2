@@ -22,14 +22,15 @@ public class Ex2 implements Runnable {
     private static long dt = 110;
     private static int id;
     private static PriorityQueue<Container> queue;
+    private static List<List<node_data>> comp;
 
     public static void main(String[] args) {
-        int sen=11;
+        int sen = 11;
         if (args.length == 2) {
-            try{
-            id = Integer.parseInt(args[0]);
-            sen = Integer.parseInt(args[1]);
-            }catch (NumberFormatException e){
+            try {
+                id = Integer.parseInt(args[0]);
+                sen = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
                 System.out.println("invalid input , try again");
                 System.exit(0);
             }
@@ -41,6 +42,16 @@ public class Ex2 implements Runnable {
         init(game);
         Thread client = new Thread(new Ex2());
         client.start();
+    }
+
+    public void TestCheck(int id, int sen) {
+        game = Game_Server_Ex2.getServer(sen);
+        this.id = id;
+        init(game);
+        System.out.println(_ar.getPokemons());
+//        Thread client = new Thread(new Ex2());
+//        client.start();
+        setWays(_ar.getPokemons());
     }
 
     /**
@@ -76,6 +87,7 @@ public class Ex2 implements Runnable {
      * Afterwards it is giving every pokemon the edge it is on using the "updateEdge" function.
      * In order to locate the agents smartly the function is marking groups of close pokemons and locate the agents
      * close to them using the functions "markClosePkms" and "locateAgents".
+     *
      * @param game
      */
     public static void init(game_service game) {
@@ -113,23 +125,26 @@ public class Ex2 implements Runnable {
     }
 
     /**
-     *  going over all of the pokemons in the graph and each's neighbors and marks
-     *  the distance between them using algo's shortestPath function.
-     *  If the distance is bigger then edges the pokemons are not close to each other.
+     * going over all of the pokemons in the graph and each's neighbors and marks
+     * the distance between them using algo's shortestPath function.
+     * If the distance is bigger then edges the pokemons are not close to each other.
+     *
      * @param pkm
      */
 
-    public static void markClosePkms(List<CL_Pokemon> pkm) {
+    private static void markClosePkms(List<CL_Pokemon> pkm) {
         for (CL_Pokemon curpk : pkm) {
             for (CL_Pokemon othpkm : pkm) {
                 List<node_data> dista = algo.shortestPath(curpk.get_edge().getSrc(), othpkm.get_edge().getSrc());
-                if (dista.size() < 2 && curpk != othpkm) {
-                    if (othpkm.getClspkm() == null) {
-                        curpk.setClosePkm();
-                        othpkm.setClspkm(curpk);
-                    } else {
-                        othpkm.getClspkm().setClosePkm();
-                        curpk.setClspkm(curpk.getClspkm());
+                if (dista != null) {
+                    if (dista.size() < 2 && curpk != othpkm) {
+                        if (othpkm.getClspkm() == null) {
+                            curpk.setClosePkm();
+                            othpkm.setClspkm(curpk);
+                        } else {
+                            othpkm.getClspkm().setClosePkm();
+                            curpk.setClspkm(curpk.getClspkm());
+                        }
                     }
                 }
             }
@@ -137,20 +152,21 @@ public class Ex2 implements Runnable {
     }
 
     /**
-     *  is divided to a case where the graph is connected and to a case it's not.
-     *  To determine that the function is using algo's "isConnected" function.
-     *  1.If the graph is connected the function is creating a priority queue of pokemons
-     *  (the comperation is based on the number of close pokemons)
-     *  then simply locating the agents to the first pokemon in the queue and poll it and then to the second etc..
-     *  2.If the graph is not connected the function is creating a list of components using algo's
-     *  "getComponents" function. then simply locate agent in each component.
-     *  If there are agents left to locate the function is locating them in
-     *  the component with the maximun number of vertices
-     *  (beacuse there a bigger chance a pokemon will appear there).
+     * is divided to a case where the graph is connected and to a case it's not.
+     * To determine that the function is using algo's "isConnected" function.
+     * 1.If the graph is connected the function is creating a priority queue of pokemons
+     * (the comperation is based on the number of close pokemons)
+     * then simply locating the agents to the first pokemon in the queue and poll it and then to the second etc..
+     * 2.If the graph is not connected the function is creating a list of components using algo's
+     * "getComponents" function. then simply locate agent in each component.
+     * If there are agents left to locate the function is locating them in
+     * the component with the maximun number of vertices
+     * (beacuse there a bigger chance a pokemon will appear there).
+     *
      * @param numOfAg
      * @param pkms
      */
-    private static void locateAgents(int numOfAg, List<CL_Pokemon> pkms) {
+    public static void locateAgents(int numOfAg, List<CL_Pokemon> pkms) {
         if (algo.isConnected()) {
             PriorityQueue<CL_Pokemon> q = new PriorityQueue<>((o1, o2) -> o2.getClosePkm() - o1.getClosePkm());
             q.addAll(_ar.getPokemons());
@@ -158,33 +174,32 @@ public class Ex2 implements Runnable {
                 CL_Pokemon nn = q.poll();
                 game.addAgent(nn.get_edge().getSrc());
             }
-
         } else {
-            List<List<node_data>> components = ((DWGraph_Algo) algo).getComponents();
+            List<List<node_data>> comp = ((DWGraph_Algo) algo).getComponents();
             int counter = 1;
-            for (int i = 0; i < components.size() - 1; ++i) {
-                int nn = components.get(i).get(0).getKey();
+            for (int i = 0; i < comp.size(); ++i) {
+                int nn = comp.get(i).get(0).getKey();
                 game.addAgent(nn);
                 counter++;
             }
             while (counter < numOfAg) {
                 int max = 0;
-                for (int i = 0; i < components.size(); i++) {
-                    if (components.get(i).size() > max)
+                for (int i = 0; i < comp.size(); i++) {
+                    if (comp.get(i).size() > max)
                         max = i;
                 }
                 for (int i = 0; i < numOfAg - counter; ++i) {
-                    int nn = components.get(max).get(0).getKey();
+                    int nn = comp.get(max).get(0).getKey();
                     game.addAgent(nn);
                     counter++;
                 }
             }
         }
-
     }
 
     /**
-     *function is simply saves the given Json graph as a String using the "FileWriter" library.
+     * function is simply saves the given Json graph as a String using the "FileWriter" library.
+     *
      * @param jsonG
      * @return
      */
@@ -207,9 +222,8 @@ public class Ex2 implements Runnable {
      * the "checkChange" function. If there was a change or it is the first run the function determines
      * the targets to all the agents using the "setWays" function.
      * Afterwards it chooses the next edge for each agent using the "chooseNextEdge" function.
-     *
      */
-    public static void moveAgents() {
+    private static void moveAgents() {
         String lg = game.move();
         List<CL_Agent> balls = Arena.updateAgents(lg, _ar.getGraph());
         String fs = game.getPokemons();
@@ -223,9 +237,9 @@ public class Ex2 implements Runnable {
             setWays(curr_pkms);
         }
         for (CL_Agent agn : _ar.getAgents()) {
-                int dest = nextNode(agn);
-                game.chooseNextEdge(agn.getID(), dest);
-                _ar.set_info("Agent: " + agn.getID() + ", score: " + agn.getValue(), agn.getID());
+            int dest = nextNode(agn);
+            game.chooseNextEdge(agn.getID(), dest);
+            _ar.set_info("Agent: " + agn.getID() + ", score: " + agn.getValue(), agn.getID());
 
         }
     }
@@ -235,7 +249,7 @@ public class Ex2 implements Runnable {
      * has finished the path.
      * Returns true of that is the case.
      */
-    private static void checkChange(){
+    private static void checkChange() {
         for (CL_Agent agnt : _ar.getAgents()) {
             if (firsRun || agnt.getPath().isEmpty()) {
                 change = true;
@@ -245,12 +259,13 @@ public class Ex2 implements Runnable {
     }
 
     /**
-     *  function is going over all of the agents and the pokemons and the arena and adding each combinaion of
-     *  them as a Container object.
-     *  Then calls the function of "chooseTarget" and finally sets firstRun to false.
+     * function is going over all of the agents and the pokemons and the arena and adding each combinaion of
+     * them as a Container object.
+     * Then calls the function of "chooseTarget" and finally sets firstRun to false.
+     *
      * @param curr_pkms
      */
-    private static void setWays(List<CL_Pokemon> curr_pkms){
+    private static void setWays(List<CL_Pokemon> curr_pkms) {
         _ar.setPokemons(curr_pkms);
         for (CL_Agent agent : _ar.getAgents()) {
             for (CL_Pokemon pkm : curr_pkms) {
@@ -271,29 +286,36 @@ public class Ex2 implements Runnable {
      * needed lower the dt so the agent won't miss the pokemon because of it's speed using the "set_SDT" function
      * on Agent's class.
      */
-    private static void chooseTarget() {
+    public static void chooseTarget() {
         while (!queue.isEmpty()) {
             Container c = queue.iterator().next();
-            if (c.getPok().getNxtEater() == null && c.getAgent().get_curr_fruit() == null && c.getDist() != -1) {
+            if (c.getPok().getNxtEater() == null && c.getAgent().get_curr_fruit() == null) {
                 if (c.getAgent().getLastEaten() != null) {
-                    if(c.getAgent().getPath().size()==1)
-                    if (c.getAgent().getLastEaten().equals(c.getPok().getLocation().toString())&&c.getAgent().getSpeed()>=5) {
-                        c.getAgent().counter++;
-                       c.getAgent().set_SDT(dt,c.getPok());
-                       dt=c.getAgent().get_sg_dt();
-                       if(c.getAgent().counter>3 && dt==110){
-                           dt=30;
-                       }
-                    }
+                    if (c.getAgent().getPath().size() == 1)
+                        if (c.getAgent().getLastEaten().equals(c.getPok().getLocation().toString()) && c.getAgent().getSpeed() >= 5) {
+                            c.getAgent().counter++;
+                            c.getAgent().set_SDT(dt, c.getPok());
+                            dt = c.getAgent().get_sg_dt();
+                            if (c.getAgent().counter > 3 && dt == 110) {
+                                dt = 30;
+                            }
+                        }
                 }
-                if(c.getAgent().getLastEaten()!=null) {
+                if (c.getAgent().getLastEaten() != null) {
                     if (!c.getAgent().getLastEaten().equals(c.getPok().getLocation().toString()))
                         c.getAgent().counter = 1;
                 }
                 c.getAgent().set_curr_fruit(c.getPok());
                 c.getPok().setNxtEater(c.getAgent());
                 node_data n = _ar.getGraph().getNode(c.getPok().get_edge().getDest());
-                c.getAgent().setPath(algo.shortestPath(c.getAgent().getSrcNode(), c.getPok().get_edge().getSrc()), n);
+                List<node_data> way = algo.shortestPath(c.getAgent().getSrcNode(), c.getPok().get_edge().getSrc());
+                if (way != null) {
+                    c.getAgent().setPath(way, n);
+                } else {
+                    if (comp != null) {
+                        c.getAgent().setPath(new LinkedList<>(), _ar.getGraph().getNode(c.getAgent().get_curr_edge().getDest()));
+                    }
+                }
             }
             queue.poll();
         }
@@ -303,10 +325,11 @@ public class Ex2 implements Runnable {
      * the function that determines the next edge to go to in the agent's path. It is taking the list of edges
      * the agent has to go over in order to get to the pokemon and tell him which is next. It sets the agent's
      * path to the new path.
+     *
      * @param agent
      * @return
      */
-    private static int nextNode(CL_Agent agent) {
+    public static int nextNode(CL_Agent agent) {
         int ans;
         if (agent.getPath().isEmpty()) {
             return -1;
@@ -322,4 +345,9 @@ public class Ex2 implements Runnable {
         agent.getPath().remove(0);
         return ans;
     }
+
+    public void checkStopTest() {
+        game.stopGame();
+    }
+
 }

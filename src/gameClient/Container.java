@@ -17,6 +17,8 @@ public class Container implements  Comparable<Container>{
         this.pok = pok;
         this.algo = algo;
         this.dist = algo.shortestPathDist(agn.getSrcNode(), pok.get_edge().getSrc());
+        if(dist==-1)
+            dist=Integer.MAX_VALUE;
     }
 
     public double getDist() {

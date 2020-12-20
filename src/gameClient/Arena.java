@@ -32,13 +32,12 @@ public class Arena {
     private static Point3D MAX = new Point3D(0, 100, 0);
 
     public Arena() {
-
         _info = new ArrayList<>(4);
         _info.add(" ");
         time = "";
     }
 
-    private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
+    public Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
         _gg = g;
         this.setAgents(r);
         this.setPokemons(p);

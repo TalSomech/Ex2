@@ -85,6 +85,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     public List<List<node_data>> getComponents (){
         Tarjan t = new Tarjan(this.graph);
         resetT();
+        t.tarjan();
         return t.getComponents();
     }
 
@@ -110,6 +111,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return path;
     }
+
     /**
      * this function find the shortest path between 2 vertices in the graph
      * using the dijkstra's algorithm to a weighted directional graph
